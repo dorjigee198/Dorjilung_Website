@@ -3221,7 +3221,8 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   letter-spacing: 0.2px;
   white-space: nowrap;
 }
-.dhpl-announce-date-short {
+.dhpl-announce-date-short,
+.dhpl-announce-date-mobile {
   display: none;
 }
 .dhpl-announce-tag-divider {
@@ -3313,6 +3314,28 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   color: var(--accent);
   text-decoration: underline;
 }
+.dhpl-announce-social {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 4px;
+}
+.dhpl-announce-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.dhpl-announce-social a:hover {
+  background: var(--accent);
+  color: var(--nav-bg);
+}
 @media (prefers-reduced-motion: reduce) {
   .dhpl-announce-track {
     animation: none !important;
@@ -3343,6 +3366,9 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   .dhpl-announce-tag-label {
     font-size: 10px;
   }
+  .dhpl-announce-social {
+    display: none;
+  }
   .dhpl-announce-list li {
     padding: 0 18px;
     gap: 9px;
@@ -3355,6 +3381,33 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   .dhpl-announce-list a,
   .dhpl-announce-list span {
     font-size: 12.5px;
+  }
+}
+@media (max-width: 480px) {
+  .dhpl-announce-tag {
+    gap: 5px;
+    padding: 6px 9px;
+  }
+  .dhpl-announce-date-short {
+    display: none;
+  }
+  .dhpl-announce-date-mobile {
+    display: inline;
+    font-size: 10px;
+  }
+  .dhpl-announce-tag-label {
+    gap: 0;
+  }
+  .dhpl-announce-tag-label-text {
+    display: none;
+  }
+  .dhpl-announce-list li {
+    padding: 0 14px;
+    gap: 7px;
+  }
+  .dhpl-announce-list a,
+  .dhpl-announce-list span {
+    font-size: 12px;
   }
 }
 
