@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="dhpl-page-body dhpl-page-body-plain dhpl-grievance-page">
+  <div class="dhpl-container dhpl-grievance-container">
+    <div class="dhpl-grievance-confirm">
+      <span class="dhpl-grievance-confirm-icon" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </span>
+      <h1>Grievance Submitted</h1>
+      <p class="dhpl-dz" lang="dz">ཞུ་བཅོལ་བཙུགས་ཟིན།</p>
+      <p class="dhpl-grievance-confirm-text">
+        Thank you — your grievance has been received. Our team will review it and respond
+        via the contact details provided, if any.
+      </p>
+      <div class="dhpl-grievance-ref">
+        <span>Your reference number</span>
+        <strong>{{ reference_no }}</strong>
+      </div>
+      <p class="dhpl-grievance-confirm-note">
+        Please keep this reference number for any future correspondence about this grievance.
+      </p>
+      <a href="/" class="btn btn-primary">Back to Home</a>
+    </div>
+  </div>
+</main>
+{% endblock %}

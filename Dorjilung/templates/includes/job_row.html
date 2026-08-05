@@ -1,0 +1,64 @@
+{% load wagtailcore_tags %}
+<article class="dhpl-job-row dhpl-job-row-{{ job.computed_status }}">
+  <div class="dhpl-job-row-main">
+    <div class="dhpl-job-row-top">
+      <span class="dhpl-status-badge dhpl-status-{{ job.computed_status }}">{{ job.status_label }}</span>
+      <span class="dhpl-job-row-type">{{ job.get_employment_type_display }}</span>
+    </div>
+    <h3 class="dhpl-job-row-title">{{ job.title }}</h3>
+    <div class="dhpl-job-row-meta">
+      {% if job.department %}<span>{{ job.department }}</span>{% endif %}
+      {% if job.location %}<span>{{ job.location }}</span>{% endif %}
+    </div>
+  </div>
+  <div class="dhpl-job-row-closing">
+    <span class="dhpl-tender-row-date-label">Closes</span>
+    {{ job.closing_date|date:"d M Y" }}
+  </div>
+  <button type="button" class="dhpl-tender-row-link" data-modal-trigger="job-modal-{{ job.pk }}">
+    View Details
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </button>
+</article>
+
+<div class="dhpl-info-modal" id="job-modal-{{ job.pk }}" aria-hidden="true">
+  <div class="dhpl-info-modal-backdrop" data-modal-close></div>
+  <div class="dhpl-info-modal-dialog">
+    <button class="dhpl-info-modal-close" data-modal-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="dhpl-info-modal-body">
+      <span class="dhpl-status-badge dhpl-status-{{ job.computed_status }}">{{ job.status_label }}</span>
+      <h2>{{ job.title }}</h2>
+      <p class="dhpl-cldp-modal-meta">
+        {% if job.department %}{{ job.department }}{% endif %}{% if job.location %} &middot; {{ job.location }}{% endif %} &middot; {{ job.get_employment_type_display }}
+      </p>
+      <p class="dhpl-cldp-modal-meta">Closes {{ job.closing_date|date:"d F Y" }}</p>
+
+      {% if job.description %}<div class="dhpl-job-modal-description">{{ job.description|richtext }}</div>{% endif %}
+
+      {% if job.documents.all %}
+      <h3>Documents</h3>
+      <ul class="dhpl-docs-list dhpl-tender-docs-list">
+        {% for doc in job.documents.all %}
+          {% if doc.document %}
+          <li>
+            <a href="{{ doc.document.url }}" download>
+              <svg class="dhpl-doc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>{{ doc.title }}</span>
+              {% if doc.document.file_size %}<span class="dhpl-doc-size">{{ doc.document.file_size|filesizeformat }}</span>{% endif %}
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if job.computed_status == 'open' %}
+      <a class="btn btn-primary" href="{{ job.mailto_link }}">Apply via Email</a>
+      {% else %}
+      <p class="dhpl-job-modal-closed-note">This posting is no longer accepting applications.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

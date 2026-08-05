@@ -1,0 +1,60 @@
+{% load wagtailimages_tags %}
+<div class="dhpl-cldp-card">
+  <div class="dhpl-cldp-card-top">
+    <span class="dhpl-cldp-status dhpl-cldp-status-{{ activity.status }}">{{ activity.get_status_display }}</span>
+    <span class="dhpl-cldp-card-date">{{ activity.date|date:"M Y" }}</span>
+  </div>
+  <h4 class="dhpl-cldp-card-title">{{ activity.title }}</h4>
+  {% if activity.location %}<p class="dhpl-cldp-card-location">{{ activity.location }}</p>{% endif %}
+
+  <div class="dhpl-cldp-card-stats">
+    <div>
+      <strong>{{ activity.actual_participants }}</strong>
+      <span>of {{ activity.target_participants }} target</span>
+    </div>
+    {% if activity.participation_rate is not None %}
+    <div class="dhpl-cldp-card-rate">{{ activity.participation_rate }}%</div>
+    {% endif %}
+  </div>
+
+  <button type="button" class="dhpl-cldp-card-link" data-modal-trigger="cldp-modal-{{ activity.pk }}">
+    View Details
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </button>
+</div>
+
+<div class="dhpl-info-modal" id="cldp-modal-{{ activity.pk }}" aria-hidden="true">
+  <div class="dhpl-info-modal-backdrop" data-modal-close></div>
+  <div class="dhpl-info-modal-dialog">
+    <button class="dhpl-info-modal-close" data-modal-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="dhpl-info-modal-body">
+      <span class="dhpl-cldp-status dhpl-cldp-status-{{ activity.status }}">{{ activity.get_status_display }}</span>
+      <h2>{{ activity.title }}</h2>
+      <p class="dhpl-cldp-modal-meta">
+        {% if activity.location %}{{ activity.location }} &middot; {% endif %}{{ activity.date|date:"F Y" }}
+      </p>
+      {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
+
+      <div class="dhpl-cldp-modal-stats">
+        <div><strong>{{ activity.target_participants }}</strong><span>Target Participants</span></div>
+        <div><strong>{{ activity.actual_participants }}</strong><span>Actual Participants</span></div>
+        <div><strong>{{ activity.male_participants }}</strong><span>Male</span></div>
+        <div><strong>{{ activity.female_participants }}</strong><span>Female</span></div>
+      </div>
+
+      {% if activity.images.all %}
+      <h3>Photos</h3>
+      <div class="dhpl-cldp-modal-gallery">
+        {% for img in activity.images.all %}
+        <figure>
+          {% image img.image fill-320x220 %}
+          {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

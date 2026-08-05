@@ -1,0 +1,80 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n wagtailimages_tags %}
+
+{% block titletag %}Gallery Bulk Manager{% endblock %}
+
+{% block content %}
+{% include "wagtailadmin/shared/header.html" with title="Gallery Bulk Manager" icon="image" %}
+
+<div class="nice-padding">
+
+  {% if messages %}
+    <div class="messages">
+      <ul>
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <h2>Bulk Upload Images</h2>
+  <p>
+    Pick a category, then select as many image files as you like — each one
+    becomes its own gallery entry tagged with that category. Need a new
+    category first? Add one under <a href="{% url 'wagtailsnippets_newsroom_gallerycategory:list' %}">Gallery Categories</a>.
+  </p>
+  <form method="post" enctype="multipart/form-data" style="margin-bottom: 40px;">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="upload">
+    <div style="margin-bottom: 12px;">
+      <label for="id_category"><strong>Category</strong></label><br>
+      {{ upload_form.category }}
+    </div>
+    <div style="margin-bottom: 16px;">
+      <label for="images"><strong>Image files</strong></label><br>
+      <input type="file" name="images" id="images" multiple accept="image/*" required>
+    </div>
+    <button type="submit" class="button bicolor button--icon">Upload</button>
+  </form>
+
+  <hr>
+
+  <h2>Re-categorize Existing Images</h2>
+  <p>Tick the images below, choose a category, and apply it to all of them at once.</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="recategorize">
+    <table class="listing" style="margin-bottom: 16px;">
+      <thead>
+        <tr>
+          <th style="width: 32px;"></th>
+          <th style="width: 80px;">Preview</th>
+          <th>Title</th>
+          <th>Current Category</th>
+          <th>Uploaded</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gi in gallery_images %}
+        <tr>
+          <td><input type="checkbox" name="selected" value="{{ gi.pk }}"></td>
+          <td>{% image gi.image fill-60x60 %}</td>
+          <td>{{ gi.title|default:"—" }}</td>
+          <td>{{ gi.category.name|default:"Uncategorized" }}</td>
+          <td>{{ gi.uploaded_at|date:"d M Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No gallery images yet — upload some above.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div style="margin-bottom: 12px;">
+      <label for="id_recat_category"><strong>Apply category to selected</strong></label><br>
+      {{ recategorize_form.category }}
+    </div>
+    <button type="submit" class="button bicolor button--icon">Apply to Selected</button>
+  </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,228 @@
+{% load static wagtailcore_tags wagtailimages_tags wagtailuserbar %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      {% block title %}{% if page and page.seo_title %}{{ page.seo_title }}{% elif page and page.title %}{{ page.title }}{% else %}Dorjilung Hydroelectric Power Limited{% endif %}{% endblock %}{% block title_suffix %}{% wagtail_site as current_site %}{% if current_site and current_site.site_name %} - {{ current_site.site_name }}{% endif %}{% endblock %}
+    </title>
+
+    {% if page and page.search_description %}
+    <meta name="description" content="{{ page.search_description }}" />
+    {% endif %} {% if request.in_preview_panel %}
+    <base target="_blank" />
+    {% endif %}
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/Dorjilung.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dhpl.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body class="{% block body_class %}{% endblock %}">
+    {% wagtailuserbar %}
+
+    {% if site_announcements %}
+    <div class="dhpl-announce-bar" role="region" aria-label="Announcements">
+      <div class="dhpl-container dhpl-announce-inner">
+        <span class="dhpl-announce-tag">
+          <span class="dhpl-announce-date">
+            <span class="dhpl-announce-date-full">{% now "l, F j, Y" %}</span>
+            <span class="dhpl-announce-date-short">{% now "D, M j, Y" %}</span>
+          </span>
+          <span class="dhpl-announce-tag-divider" aria-hidden="true"></span>
+          <span class="dhpl-announce-tag-label">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6l-5 4H4a1 1 0 0 0-1 1z"/><path d="M16 8a4 4 0 0 1 0 8"/><path d="M19 5a8 8 0 0 1 0 14"/></svg>
+            Announcement
+          </span>
+        </span>
+        <div class="dhpl-announce-viewport">
+          <div class="dhpl-announce-track">
+            <ul class="dhpl-announce-list">
+              {% for a in site_announcements %}
+              <li>
+                {% if a.image %}{% image a.image fill-56x56 class="dhpl-announce-thumb" %}{% endif %}
+                {% if a.link %}<a href="{{ a.link }}">{{ a.text }}</a>{% else %}<span>{{ a.text }}</span>{% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+            <ul class="dhpl-announce-list" aria-hidden="true">
+              {% for a in site_announcements %}
+              <li>
+                {% if a.image %}{% image a.image fill-56x56 class="dhpl-announce-thumb" %}{% endif %}
+                {% if a.link %}<a href="{{ a.link }}" tabindex="-1">{{ a.text }}</a>{% else %}<span>{{ a.text }}</span>{% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="dhpl-brand-band">
+      <div class="dhpl-container dhpl-brand-band-inner">
+        <a href="/" class="dhpl-logo-link">
+          <span class="dhpl-logo-figure">
+            <img src="{% static 'images/logo.jpg' %}" alt="Dorjilung Hydro Power Limited seal" />
+          </span>
+        </a>
+        <div class="dhpl-brand-text">
+          <div class="dhpl-name-dz" lang="dz">རྡོ་རྗེ་ལུང་གློག་མེ་ཚད་འཛིན།</div>
+          <div class="dhpl-name">DORJILUNG HYDROELECTRIC POWER LIMITED</div>
+        </div>
+        <img
+          src="{% static 'images/dgpc_logo_trimmed.png' %}"
+          alt="Druk Green Power Corporation logo"
+          class="dhpl-header-partner-logo"
+        />
+      </div>
+    </div>
+
+    <header class="dhpl-header">
+      <div class="dhpl-container dhpl-header-inner">
+        <button
+          class="dhpl-mobile-toggle"
+          aria-expanded="false"
+          aria-controls="dhpl-main-nav"
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+
+        <nav class="dhpl-nav" aria-label="Main navigation">
+          <ul id="dhpl-main-nav" class="dhpl-menu">
+            <li><a href="/"{% if request.path == '/' %} class="active"{% endif %}>Home</a></li>
+            <li class="has-dropdown">
+              <a href="/#discover"
+                >About <span class="caret" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></a
+              >
+              <ul class="dhpl-submenu">
+                <li><a href="/#discover">Overview</a></li>
+                <li><a href="/#vision">Vision &amp; Mission</a></li>
+                <li><a href="/#structure">Board of Directors</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown">
+              <a href="/#project-overview"
+                >Project <span class="caret" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></a
+              >
+              <ul class="dhpl-submenu">
+                <li><a href="/#project-overview">Project Overview</a></li>
+                <li><a href="/#progress">Timeline &amp; Milestones</a></li>
+                <li><a href="/#technical-specs">Technical Specifications</a></li>
+              </ul>
+            </li>
+            <li><a href="/#sustainability">Environment &amp; Social</a></li>
+            <li><a href="/media-centre/"{% if '/media-centre/' in request.path %} class="active"{% endif %}>Media</a></li>
+            <li><a href="/tenders/"{% if '/tenders/' in request.path %} class="active"{% endif %}>Tenders</a></li>
+            <li><a href="/careers/"{% if '/careers/' in request.path %} class="active"{% endif %}>Careers</a></li>
+            <li><a href="/cldp/"{% if '/cldp/' in request.path %} class="active"{% endif %}>CLDP</a></li>
+          </ul>
+        </nav>
+
+        <div class="dhpl-cta">
+          <a class="dhpl-grievance" href="/grievance/" role="button"
+            ><span class="shield"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V6l7-3z"/></svg></span> <span>Grievance</span></a
+          >
+        </div>
+      </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer class="dhpl-footer">
+      <div class="dhpl-container dhpl-footer-grid">
+        <div class="dhpl-footer-col dhpl-footer-brand">
+          <div class="dhpl-footer-logo">
+            <img src="{% static 'images/logo.jpg' %}" alt="DHPL seal" />
+            <div>
+              <div class="dhpl-footer-name">DHPL</div>
+              <div class="dhpl-footer-fullname">Dorjilung Hydroelectric Power Limited</div>
+            </div>
+          </div>
+          <p class="dhpl-footer-tagline">Powering Bhutan's sustainable future through responsible hydropower development.</p>
+          <div class="dhpl-footer-social">
+            <a href="https://www.facebook.com/p/Dorjilung-Hydro-Power-Limited-61581075713404/" target="_blank" rel="noopener" aria-label="DHPL on Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46H15.2c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/dorjilunghpl/" target="_blank" rel="noopener" aria-label="DHPL on LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+            </a>
+            <a href="mailto:info@dorjilung.bt" aria-label="Email DHPL">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="dhpl-footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/#discover">About Us</a></li>
+            <li><a href="/#project-overview">Project Overview</a></li>
+            <li><a href="/#environment">Environment</a></li>
+            <li><a href="/#social">Social</a></li>
+            <li><a href="/cldp/">CLD Dashboard</a></li>
+            <li><a href="/grievance/">Grievance</a></li>
+          </ul>
+        </div>
+
+        <div class="dhpl-footer-col">
+          <h4>Related Entities</h4>
+          <ul>
+            <li><a href="https://drukgreen.bt" target="_blank" rel="noopener">DGPC</a></li>
+            <li><a href="https://tatapower.com" target="_blank" rel="noopener">Tata Power</a></li>
+            <li><a href="https://moenr.gov.bt" target="_blank" rel="noopener">Ministry of Energy</a></li>
+          </ul>
+        </div>
+
+        <div class="dhpl-footer-col">
+          <h4>Contact</h4>
+          <div class="dhpl-footer-address">
+            <strong>Head Office</strong>
+            <p>Chubachhu, Thimphu, Bhutan</p>
+          </div>
+          <div class="dhpl-footer-address">
+            <strong>Project Office</strong>
+            <p>Gyalposhing, Mongar, Bhutan</p>
+          </div>
+          <p><a href="tel:+97517314077">+975 17314077</a></p>
+          <p><a href="mailto:info@dorjilung.bt">info@dorjilung.bt</a></p>
+        </div>
+      </div>
+
+      <div class="dhpl-footer-bottom">
+        <div class="dhpl-container">
+          <p>&copy; {% now "Y" %} Dorjilung Hydropower Company Limited. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <button class="dhpl-floating dhpl-floating-left" aria-label="Security">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+    </button>
+    <button class="dhpl-floating dhpl-floating-right" aria-label="Chat with us">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    </button>
+
+    <script
+      type="text/javascript"
+      src="{% static 'js/Dorjilung.js' %}"
+    ></script>
+    <script type="text/javascript" src="{% static 'js/dhpl.js' %}"></script>
+    {% if site_announcements %}
+    <script src="{% static 'js/dhpl-announce.js' %}"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

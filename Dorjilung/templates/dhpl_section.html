@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+<header class="dhpl-page-header">
+  <div class="dhpl-container">
+    <div class="dhpl-section-label">DHPL</div>
+    <h1>{{ title|default:section_title }}</h1>
+  </div>
+</header>
+
+<main class="dhpl-page-body">
+  <div class="dhpl-container">
+    <div class="dhpl-placeholder-card">
+      <span class="tag">Coming soon</span>
+      <p>
+        {% if section_blurb %}{{ section_blurb }}{% else %}This is a
+        placeholder page for the {{ section_title }} section.{% endif %}
+        Full content for this section will be added in a later phase.
+      </p>
+    </div>
+  </div>
+</main>
+{% endblock %}

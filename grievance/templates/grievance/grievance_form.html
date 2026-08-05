@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<main class="dhpl-page-body dhpl-page-body-plain dhpl-grievance-page">
+  <div class="dhpl-container dhpl-grievance-container">
+
+    <div class="dhpl-grievance-head dhpl-reveal-anim dhpl-reveal-up">
+      <span class="dhpl-section-label">Community Voice</span>
+      <h1 class="dhpl-simple-title">Grievance Redressal Mechanism</h1>
+      <p class="dhpl-dz dhpl-grievance-dz-title" lang="dz">ཉོགས་བཤད་སེལ་ཐབས་ཀྱི་ཐབས་ལམ།།</p>
+      <p class="dhpl-grievance-intro">
+        We are committed to addressing your concerns transparently. If you cannot write,
+        you may record your voice or upload a video below.
+      </p>
+    </div>
+
+    <form
+      class="dhpl-grievance-form dhpl-reveal-anim dhpl-reveal-up"
+      method="post"
+      enctype="multipart/form-data"
+      id="grievance-form"
+      novalidate
+    >
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="dhpl-form-alert">
+        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="dhpl-grievance-card">
+        <label class="dhpl-anon-toggle" for="{{ form.is_anonymous.id_for_label }}">
+          <span class="dhpl-anon-toggle-text">
+            <strong>Submit Anonymously</strong>
+            <span class="dhpl-dz" lang="dz">མིང་མ་བཀོལ་བར་ཞུ་བཅོལ་བཙུགས།</span>
+          </span>
+          <span class="dhpl-switch">
+            {{ form.is_anonymous }}
+            <span class="dhpl-switch-track" aria-hidden="true"></span>
+          </span>
+        </label>
+
+        <div class="dhpl-grievance-grid" id="grievance-identity-fields">
+          <div class="dhpl-field dhpl-field-identity">
+            <label for="{{ form.full_name.id_for_label }}">
+              Full Name <span class="dhpl-dz" lang="dz">(མིང་།)</span>
+              <span class="dhpl-required-mark" aria-hidden="true">*</span>
+            </label>
+            {{ form.full_name }}
+            {% for error in form.full_name.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+
+          <div class="dhpl-field dhpl-field-identity">
+            <label for="{{ form.cid_number.id_for_label }}">
+              CID Number <span class="dhpl-dz" lang="dz">(མི་ཁུངས་ལག་ཁྱེར་ཨང་།)</span>
+              <span class="dhpl-required-mark" aria-hidden="true">*</span>
+            </label>
+            {{ form.cid_number }}
+            {% for error in form.cid_number.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+
+          <div class="dhpl-field">
+            <label for="{{ form.email.id_for_label }}">
+              Email <span class="dhpl-dz" lang="dz">(གློག་འཕྲིན།)</span>
+            </label>
+            {{ form.email }}
+            {% for error in form.email.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+
+          <div class="dhpl-field dhpl-field-identity">
+            <label for="{{ form.phone.id_for_label }}">
+              Phone <span class="dhpl-dz" lang="dz">(བརྒྱུད་འཕྲིན་ཨང)</span>
+              <span class="dhpl-required-mark" aria-hidden="true">*</span>
+            </label>
+            {{ form.phone }}
+            {% for error in form.phone.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+
+          <div class="dhpl-field">
+            <label for="{{ form.village_gewog.id_for_label }}">
+              Village / Gewog <span class="dhpl-dz" lang="dz">(གཡུས།)</span>
+            </label>
+            {{ form.village_gewog }}
+          </div>
+
+          <div class="dhpl-field">
+            <label for="{{ form.category.id_for_label }}">
+              Category <span class="dhpl-dz" lang="dz">(དབྱེ་ཁག།)</span>
+              <span class="dhpl-required-mark" aria-hidden="true">*</span>
+            </label>
+            {{ form.category }}
+            {% for error in form.category.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+        </div>
+
+        <p class="dhpl-anon-note" id="grievance-anon-note">
+          Identity fields marked <strong>*</strong> are optional when submitting anonymously.
+        </p>
+
+        <div class="dhpl-field dhpl-field-full">
+          <label for="{{ form.description.id_for_label }}">
+            Written Description <span class="dhpl-dz" lang="dz">/ ཞུ་བཅོལ་བརྗོད་རྒྱུ།</span>
+          </label>
+          {{ form.description }}
+        </div>
+      </div>
+
+      <div class="dhpl-grievance-alt">
+        <h2>Alternative: Record Voice or Upload Video</h2>
+        <p>For those who cannot write, please use the options below to explain your grievance verbally.</p>
+
+        <div class="dhpl-grievance-alt-grid">
+          <div class="dhpl-upload-field">
+            <span class="dhpl-upload-label">Record Voice</span>
+            <label class="dhpl-upload-dropzone" for="{{ form.audio_file.id_for_label }}">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              <span id="grievance-audio-filename">Upload a voice recording</span>
+            </label>
+            {{ form.audio_file }}
+            <span class="dhpl-upload-hint">MP3, WAV, M4A up to 50MB. Record a voice memo on your phone, then upload it here.</span>
+            {% for error in form.audio_file.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+
+          <div class="dhpl-upload-field">
+            <span class="dhpl-upload-label">Upload a Video</span>
+            <label class="dhpl-upload-dropzone" for="{{ form.video_file.id_for_label }}">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              <span id="grievance-video-filename">Browse files</span>
+            </label>
+            {{ form.video_file }}
+            <span class="dhpl-upload-hint">MP4, MOV, AVI up to 50MB.</span>
+            {% for error in form.video_file.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+          </div>
+        </div>
+        <p class="dhpl-field-error" id="grievance-upload-error"></p>
+      </div>
+
+      <label class="dhpl-declaration">
+        {{ form.declaration_accepted }}
+        <span>
+          I declare that the information provided is true and correct.
+          <span class="dhpl-dz" lang="dz">/ ང་ལུ་བཀང་ཡོད་པའི་བརྡ་དོན་འདི་བདེན་མཐོང་དང་ངེས་བདེན་ཨིནམ་ང་གིས་ཁས་ལེན་འབདཝ་ཨིན།</span>
+        </span>
+      </label>
+      {% for error in form.declaration_accepted.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}
+
+      <button type="submit" class="btn btn-primary dhpl-grievance-submit">
+        Submit Grievance <span class="dhpl-dz" lang="dz">/ ཞུ་བཅོལ་བཙུགས།</span>
+      </button>
+    </form>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dhpl-grievance.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+.venv/
+venv/
+
+# Django / Wagtail
+db.sqlite3
+db.sqlite3-journal
+/static/
+/media/
+Dorjilung/settings/local.py
+
+# Large media not suited to git history (host separately / compress first)
+Dorjilung/static/videos/*.mp4
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

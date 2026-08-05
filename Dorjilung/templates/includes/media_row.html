@@ -1,0 +1,18 @@
+{% load wagtailimages_tags %}
+<article class="dhpl-media-row">
+  <div class="dhpl-media-row-thumb">
+    {% if item.image %}
+      {% image item.image fill-160x120 %}
+    {% else %}
+      <span class="dhpl-media-row-thumb-placeholder" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+      </span>
+    {% endif %}
+  </div>
+  <div class="dhpl-media-row-body">
+    <h4>{{ item.title }}</h4>
+    <span class="dhpl-news-date">{{ item.published_date|date:"M d, Y" }}</span>
+    {% if item.excerpt %}<p>{{ item.excerpt }}</p>{% endif %}
+    {% if item.link %}<a class="dhpl-news-link" href="{{ item.link }}" target="_blank" rel="noopener">{{ read_label }}</a>{% endif %}
+  </div>
+</article>

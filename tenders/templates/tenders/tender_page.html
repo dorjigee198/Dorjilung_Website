@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<header class="dhpl-page-header">
+  <div class="dhpl-container">
+    <div class="dhpl-section-label"><a href="/tenders/" class="dhpl-breadcrumb-link">Tenders</a></div>
+    <h1>{{ page.title }}</h1>
+    <div class="dhpl-tender-ref">{{ page.reference_no }}</div>
+  </div>
+</header>
+
+<main class="dhpl-page-body">
+  <div class="dhpl-container dhpl-tender-detail">
+
+    <div class="dhpl-status-banner dhpl-status-banner-{{ page.computed_status }}">
+      <span class="dhpl-status-banner-icon" aria-hidden="true">
+        {% if page.computed_status == "open" %}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        {% elif page.computed_status == "cancelled" %}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        {% else %}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        {% endif %}
+      </span>
+      <div>
+        <span class="dhpl-status-badge dhpl-status-{{ page.computed_status }}">{{ page.status_label }}</span>
+        <span class="dhpl-status-banner-text">
+          {% if page.computed_status == "cancelled" %}
+            This tender has been cancelled.
+          {% elif page.computed_status == "open" %}
+            Closes {{ page.effective_closing_date|date:"d M Y, H:i" }} hrs
+          {% else %}
+            Closed {{ page.effective_closing_date|date:"d M Y, H:i" }} hrs
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
+    <div class="dhpl-specs-table dhpl-tender-key-dates">
+      <div class="dhpl-specs-row">
+        <span class="dhpl-specs-key">Publish Date</span>
+        <span class="dhpl-specs-value">{{ page.publish_date|date:"d M Y, H:i" }} hrs</span>
+      </div>
+      <div class="dhpl-specs-row">
+        <span class="dhpl-specs-key">Opening Date</span>
+        <span class="dhpl-specs-value">{{ page.opening_date|date:"d M Y, H:i" }} hrs</span>
+      </div>
+      <div class="dhpl-specs-row">
+        <span class="dhpl-specs-key">Closing Date</span>
+        <span class="dhpl-specs-value">
+          {% if page.is_extended %}
+            <span class="dhpl-tender-row-close-dates">
+              <span class="dhpl-strike">{{ page.closing_date|date:"d M Y, H:i" }} hrs</span>
+              <span class="dhpl-tender-row-date-new">{{ page.effective_closing_date|date:"d M Y, H:i" }} hrs</span>
+            </span>
+          {% else %}
+            {{ page.closing_date|date:"d M Y, H:i" }} hrs
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
+    {% if page.description %}
+    <h2 class="dhpl-block-heading dhpl-block-heading-spaced">Description</h2>
+    <div class="dhpl-tender-richtext">{{ page.description|richtext }}</div>
+    {% endif %}
+
+    {% with subtenders=page.sub_tenders.all %}
+    {% if subtenders %}
+    <h2 class="dhpl-block-heading dhpl-block-heading-spaced">Sub-Tenders</h2>
+    <div class="dhpl-subtender-list">
+      {% for sub in subtenders %}
+      <div class="dhpl-subtender-item">
+        <h3>{{ sub.title }}</h3>
+        {% if sub.reference_no %}<div class="dhpl-tender-row-ref">{{ sub.reference_no }}</div>{% endif %}
+        {% if sub.description %}<div class="dhpl-tender-richtext">{{ sub.description|richtext }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <h2 class="dhpl-block-heading dhpl-block-heading-spaced">Documents</h2>
+    {% if ungrouped_documents or grouped_documents %}
+      {% if ungrouped_documents %}
+      <ul class="dhpl-docs-list dhpl-tender-docs-list">
+        {% for doc in ungrouped_documents %}
+          {% if doc.document %}
+          <li>
+            <a href="{{ doc.document.url }}">
+              <svg class="dhpl-doc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>{{ doc.title }}</span>
+              {% if doc.document.file_size %}<span class="dhpl-doc-size">{{ doc.document.file_size|filesizeformat }}</span>{% endif %}
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% for sub_name, docs in grouped_documents.items %}
+        <h3 class="dhpl-tender-doc-group-title">{{ sub_name }}</h3>
+        <ul class="dhpl-docs-list dhpl-tender-docs-list">
+          {% for doc in docs %}
+            {% if doc.document %}
+            <li>
+              <a href="{{ doc.document.url }}">
+                <svg class="dhpl-doc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>{{ doc.title }}</span>
+                {% if doc.document.file_size %}<span class="dhpl-doc-size">{{ doc.document.file_size|filesizeformat }}</span>{% endif %}
+              </a>
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    {% else %}
+      <p class="dhpl-docs-empty">No documents uploaded yet.</p>
+    {% endif %}
+
+    {% if extensions_newest_first %}
+    <h2 class="dhpl-block-heading dhpl-block-heading-spaced">Extensions</h2>
+    <div class="dhpl-timeline dhpl-tender-extensions">
+      {% for ext in extensions_newest_first %}
+      <div class="dhpl-timeline-item">
+        <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+        <div class="dhpl-timeline-content">
+          <div class="dhpl-timeline-meta">
+            <span class="dhpl-timeline-year">New closing: {{ ext.new_closing_date|date:"d M Y, H:i" }} hrs</span>
+          </div>
+          <h4>Issued {{ ext.issued_date|date:"d M Y" }}</h4>
+          {% if ext.remarks %}<p>{{ ext.remarks }}</p>{% endif %}
+          {% if ext.notice %}<a class="dhpl-news-link" href="{{ ext.notice.url }}">Download Notice →</a>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <a class="btn btn-primary dhpl-tender-email-btn" href="{{ page.mailto_link }}">Email us about this tender</a>
+  </div>
+</main>
+{% endblock %}

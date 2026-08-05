@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1f3d" />
+      <stop offset="100%" stop-color="#123259" />
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e2748" />
+      <stop offset="100%" stop-color="#081729" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1fae7d" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#1fae7d" stop-opacity="0.15" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky)" />
+
+  <!-- distant mountains -->
+  <polygon points="0,520 220,300 420,470 640,260 900,480 1100,320 1320,500 1600,340 1600,900 0,900" fill="#0f2a4d" opacity="0.75" />
+  <!-- mid mountains -->
+  <polygon points="0,620 260,420 500,600 760,400 1040,610 1320,430 1600,600 1600,900 0,900" fill="#0c223f" opacity="0.9" />
+
+  <!-- dam structure -->
+  <rect x="560" y="560" width="480" height="220" fill="#132c50" />
+  <g stroke="#1b3a67" stroke-width="6">
+    <line x1="600" y1="560" x2="600" y2="780" />
+    <line x1="660" y1="560" x2="660" y2="780" />
+    <line x1="720" y1="560" x2="720" y2="780" />
+    <line x1="780" y1="560" x2="780" y2="780" />
+    <line x1="840" y1="560" x2="840" y2="780" />
+    <line x1="900" y1="560" x2="900" y2="780" />
+    <line x1="960" y1="560" x2="960" y2="780" />
+    <line x1="1020" y1="560" x2="1020" y2="780" />
+  </g>
+
+  <!-- spillway water -->
+  <rect x="760" y="560" width="70" height="220" fill="#2f6fb0" opacity="0.55" />
+  <rect x="870" y="560" width="50" height="220" fill="#2f6fb0" opacity="0.4" />
+
+  <!-- reservoir -->
+  <rect x="0" y="700" width="1600" height="200" fill="url(#water)" />
+  <path d="M0,700 Q400,680 800,705 T1600,700 V900 H0 Z" fill="#0b1f3a" opacity="0.6" />
+
+  <!-- accent horizon line -->
+  <rect x="0" y="696" width="1600" height="3" fill="url(#accent)" />
+
+  <!-- soft vignette -->
+  <rect width="1600" height="900" fill="#0a1f3d" opacity="0.15" />
+</svg>

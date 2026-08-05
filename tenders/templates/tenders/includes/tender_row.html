@@ -1,0 +1,33 @@
+{% load wagtailcore_tags %}
+<article class="dhpl-tender-row dhpl-tender-row-{{ tender.computed_status }}">
+  <div class="dhpl-tender-row-main">
+    <div class="dhpl-tender-row-top">
+      <span class="dhpl-status-badge dhpl-status-{{ tender.computed_status }}">{{ tender.status_label }}</span>
+      {% if tender.is_extended %}<span class="dhpl-extended-badge">Extended</span>{% endif %}
+      {% with subtender_count=tender.sub_tenders.all|length %}
+        {% if subtender_count %}<span class="dhpl-subtender-count">{{ subtender_count }} sub-tender{{ subtender_count|pluralize }}</span>{% endif %}
+      {% endwith %}
+    </div>
+    <h3 class="dhpl-tender-row-title"><a href="{% pageurl tender %}">{{ tender.title }}</a></h3>
+    <div class="dhpl-tender-row-ref">{{ tender.reference_no }}</div>
+  </div>
+  <div class="dhpl-tender-row-dates">
+    <div><span class="dhpl-tender-row-date-label">Published</span> {{ tender.publish_date|date:"d M Y, H:i" }} hrs</div>
+    <div><span class="dhpl-tender-row-date-label">Opens</span> {{ tender.opening_date|date:"d M Y, H:i" }} hrs</div>
+    <div class="dhpl-tender-row-closes">
+      <span class="dhpl-tender-row-date-label">Closes</span>
+      {% if tender.is_extended %}
+        <span class="dhpl-tender-row-close-dates">
+          <span class="dhpl-strike">{{ tender.closing_date|date:"d M Y, H:i" }} hrs</span>
+          <span class="dhpl-tender-row-date-new">{{ tender.effective_closing_date|date:"d M Y, H:i" }} hrs</span>
+        </span>
+      {% else %}
+        {{ tender.closing_date|date:"d M Y, H:i" }} hrs
+      {% endif %}
+    </div>
+  </div>
+  <a class="dhpl-tender-row-link" href="{% pageurl tender %}">
+    View Details
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</article>

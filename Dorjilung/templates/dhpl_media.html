@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block content %}
+<main class="dhpl-page-body dhpl-page-body-plain">
+  <div class="dhpl-container">
+    <h1 class="dhpl-simple-title">Media Centre</h1>
+
+    <div class="dhpl-tender-section-heading">
+      <h2 class="dhpl-block-heading">News</h2>
+      <span class="dhpl-heading-count">{{ media_coverage|length }}</span>
+    </div>
+    {% if media_coverage %}
+    <div class="dhpl-media-row-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+      {% for item in media_coverage %}
+        {% include "includes/media_row.html" with item=item read_label="Read Article →" %}
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="dhpl-tender-empty"><p>No news items yet.</p></div>
+    {% endif %}
+
+    <div class="dhpl-tender-divider"></div>
+
+    <div class="dhpl-tender-section-heading">
+      <h2 class="dhpl-block-heading">Press Releases</h2>
+      <span class="dhpl-heading-count">{{ press_releases|length }}</span>
+    </div>
+    {% if press_releases %}
+    <div class="dhpl-media-row-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+      {% for item in press_releases %}
+        {% include "includes/media_row.html" with item=item read_label="Read Full →" %}
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="dhpl-tender-empty"><p>No press releases yet.</p></div>
+    {% endif %}
+
+    <div class="dhpl-tender-divider"></div>
+
+    <div class="dhpl-tender-section-heading">
+      <h2 class="dhpl-block-heading">Gallery</h2>
+      <span class="dhpl-heading-count">{{ gallery_images|length }}</span>
+    </div>
+
+    {% if gallery_images %}
+    <div class="dhpl-gallery-filters">
+      <button type="button" class="dhpl-gallery-filter-btn active" data-filter="all">All</button>
+      {% for cat in gallery_categories %}
+      <button type="button" class="dhpl-gallery-filter-btn" data-filter="{{ cat.slug }}">{{ cat.name }}</button>
+      {% endfor %}
+    </div>
+    <div class="dhpl-gallery-grid">
+      {% for gi in gallery_images %}
+      <button
+        type="button"
+        class="dhpl-gallery-item"
+        data-category="{{ gi.category.slug|default:'' }}"
+        data-full="{{ gi.image.file.url }}"
+        data-caption="{{ gi.title|default:'' }}"
+      >
+        {% image gi.image fill-320x240 %}
+        {% if gi.title %}<span class="dhpl-gallery-item-caption">{{ gi.title }}</span>{% endif %}
+      </button>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="dhpl-tender-empty"><p>Gallery photos will be published here soon.</p></div>
+    {% endif %}
+  </div>
+</main>
+
+<div class="dhpl-info-modal dhpl-gallery-lightbox" id="dhpl-gallery-lightbox" aria-hidden="true">
+  <div class="dhpl-info-modal-backdrop" data-lightbox-close></div>
+  <div class="dhpl-lightbox-dialog">
+    <button class="dhpl-video-modal-close" type="button" data-lightbox-close aria-label="Close image">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+    <img id="dhpl-lightbox-img" src="" alt="">
+    <p id="dhpl-lightbox-caption" class="dhpl-lightbox-caption"></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dhpl-gallery.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,664 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block content %}
+<section class="dhpl-hero">
+  <div class="dhpl-hero-slides">
+    <div class="dhpl-hero-slide active" style="background-image:url('{% static "images/image1.jpg" %}')" data-caption="Ground-Breaking Blessing Ceremony"></div>
+    <div class="dhpl-hero-slide" style="background-image:url('{% static "images/image2.jpg" %}')" data-caption="Project Site Safety Briefing"></div>
+    <div class="dhpl-hero-slide" style="background-image:url('{% static "images/image3.jpg" %}')" data-caption="Loan Signing Ceremony"></div>
+    <div class="dhpl-hero-slide" style="background-image:url('{% static "images/image4.jpg" %}')" data-caption="MoU Signing — Tata Power &amp; DGPC"></div>
+    <div class="dhpl-hero-slide" style="background-image:url('{% static "images/image5.jpg" %}')" data-caption="Ground-Breaking Blessing Ceremony"></div>
+  </div>
+
+  <div class="dhpl-hero-overlay"></div>
+
+  <div class="dhpl-hero-inner">
+    <div>
+      <div class="label"><span style="width:36px;height:3px;background:var(--accent);display:inline-block;margin-right:10px"></span>WELCOME TO DHPL</div>
+      <h1>Powering Bhutan's <span class="gold">Sustainable</span> <span class="gold">Energy Future</span></h1>
+      <p>The Dorjilung Hydroelectric Power Project (DHPP) — A 1,125 MW initiative driving economic growth, sustainability, and energy security.</p>
+      <div class="dhpl-buttons">
+        <a class="btn btn-primary" href="https://www.power-technology.com/projects/dorjilung-hydropower-project-bhutan/?cf-view" target="_blank" rel="noopener">EXPLORE PROJECT →</a>
+        <button class="btn btn-ghost" type="button" data-video-trigger><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;vertical-align:-1px"><path d="M8 5v14l11-7-11-7z"/></svg>WATCH VIDEO</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dhpl-hero-caption"></div>
+
+  <div class="dhpl-hero-dots" role="tablist" aria-label="Hero image slides">
+    <button class="dot active" data-index="0" aria-label="Slide 1"></button>
+    <button class="dot" data-index="1" aria-label="Slide 2"></button>
+    <button class="dot" data-index="2" aria-label="Slide 3"></button>
+    <button class="dot" data-index="3" aria-label="Slide 4"></button>
+    <button class="dot" data-index="4" aria-label="Slide 5"></button>
+  </div>
+</section>
+
+<main>
+  <section class="dhpl-section dhpl-intro" id="discover">
+    <div class="dhpl-container">
+      <div class="dhpl-intro-grid">
+        <div class="dhpl-intro-text dhpl-reveal-anim dhpl-reveal-left">
+          <div class="dhpl-section-label">Discover DHPP</div>
+          <h2 class="dhpl-section-heading">Project Introduction</h2>
+          <p class="dhpl-section-text">
+            The Dorjilung Hydroelectric Power Project (DHPP) is one of Bhutan's most important national infrastructure initiatives. It is envisioned as a transformational 1,125 MW run-of-river project that will significantly strengthen the country's long-term energy security, economic development, and commitment to low-carbon growth. Recognized as a national priority by His Majesty the King, DHPP represents a modern approach to hydropower development, one that emphasizes strong environmental and social safeguards, adherence to international best practices, and a transparent Public-Private Partnership model between Druk Green Power Corporation Limited (DGPC) and Tata Power Company Limited of India. Supported by the financial and technical expertise of the World Bank Group, the project is expected to become a leading example of sustainable hydropower development in South Asia.
+          </p>
+          <div class="dhpl-buttons">
+            <a class="btn btn-primary" href="https://www.power-technology.com/projects/dorjilung-hydropower-project-bhutan/?cf-view" target="_blank" rel="noopener">Learn More</a>
+            <button class="btn btn-outline-dark" type="button" data-video-trigger><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;vertical-align:-1px"><path d="M8 5v14l11-7-11-7z"/></svg>Watch Introduction</button>
+          </div>
+          <a class="dhpl-text-link" href="/about/">About Us →</a>
+        </div>
+        <div class="dhpl-intro-video dhpl-reveal-anim dhpl-reveal-right">
+          <button
+            class="dhpl-video-thumb"
+            type="button"
+            data-video-trigger
+            aria-label="Play project introduction video"
+            style="background-image:url('{% static "images/image1.jpg" %}')"
+          >
+            <span class="dhpl-video-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7-11-7z"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section dhpl-section-alt" id="vision">
+    <div class="dhpl-container">
+      <div class="dhpl-split-grid">
+        <div class="dhpl-reveal-anim dhpl-reveal-left">
+          <div class="dhpl-section-label">Our Foundation</div>
+          <h2 class="dhpl-section-heading">Vision &amp; Strategic Objectives</h2>
+          <p class="dhpl-section-text">
+            Rather than a classical corporate mission statement, DHPL's vision and guiding principles are defined by its national mandate and governance framework.
+          </p>
+          <blockquote class="dhpl-vision-quote">
+            "To construct and operate a transformational, world-class 1,125 MW run-of-river hydropower facility that dramatically strengthens Bhutan's long-term energy security, closes seasonal winter power deficits, and drives sustainable low-carbon economic growth."
+          </blockquote>
+        </div>
+        <div class="dhpl-split-media dhpl-reveal-anim dhpl-reveal-right">
+          <img src="{% static 'images/7.avif' %}" alt="The Kurichhu River valley near the Dorjilung project site" loading="lazy">
+        </div>
+      </div>
+      <div class="dhpl-feature-grid dhpl-reveal-anim dhpl-reveal-stagger">
+        <div class="dhpl-feature-card">
+          <span class="num">01</span>
+          <h3>Capacity Expansion</h3>
+          <p>Generating 4,500+ GWh of clean electricity annually — boosting Bhutan's total generation capacity by roughly 40%.</p>
+        </div>
+        <div class="dhpl-feature-card">
+          <span class="num">02</span>
+          <h3>Regional Trade &amp; Climate Action</h3>
+          <p>Exporting surplus clean energy to India during peak summer demand, displacing millions of tons of CO2e annually.</p>
+        </div>
+        <div class="dhpl-feature-card">
+          <span class="num">03</span>
+          <h3>Innovative Financing Model</h3>
+          <p>A pioneering PPP model channeling private equity and international institutional capital while limiting sovereign borrowing.</p>
+        </div>
+        <div class="dhpl-feature-card">
+          <span class="num">04</span>
+          <h3>Environmental &amp; Social Stewardship</h3>
+          <p>Strict ESG practices aligned with national regulation and the World Bank's Environmental &amp; Social Framework.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section" id="project-overview">
+    <div class="dhpl-container">
+      <div class="dhpl-split-grid">
+        <div class="dhpl-split-media dhpl-reveal-anim dhpl-reveal-left">
+          <img src="{% static 'images/4.jpg' %}" alt="DHPL leadership on a project site walkthrough" loading="lazy">
+        </div>
+        <div class="dhpl-reveal-anim dhpl-reveal-right">
+          <div class="dhpl-section-label">Project Overview</div>
+          <h2 class="dhpl-section-heading">Transforming the Lives of the People of Bhutan</h2>
+          <p class="dhpl-section-text">
+            The Dorjilung Hydroelectric Power Project (DHPP) is a 1,125 MW run-of-the-river project located on the Kurichhu River in Lhuentse Dzongkhag. As a joint initiative with DGPC, Tata Power, and support from the World Bank, DHPP represents a significant step towards energy security and economic prosperity for Bhutan.
+          </p>
+        </div>
+      </div>
+      <div class="dhpl-subsection-grid dhpl-reveal-anim dhpl-reveal-split">
+        <div class="dhpl-subsection">
+          <h3>Partnership Model and Financing</h3>
+          <p>The project is being developed through a joint venture between DGPC and TCPL, where DGPC will hold 60 percent equity and TCPL will hold 40 percent. A dedicated company, Dorjilung Hydro Power Limited (DHPL), has been incorporated to develop, operate, and maintain the project under a concession agreement with the Royal Government of Bhutan for a period of 30 years.</p>
+        </div>
+        <div class="dhpl-subsection">
+          <h3>Financing and International Standards</h3>
+          <p>DHPP has an estimated cost of USD 1.7 billion. The financing structure will follow a debt-equity ratio of seventy percent debt and thirty percent equity. The World Bank Group will serve as the lead multilateral financier.</p>
+        </div>
+      </div>
+      <a class="btn btn-outline-dark" href="https://www.waterpowermagazine.com/news/tata-power-and-dgpc-sign-commercial-agreements-for-dorjilung-hydropower-project-bhutan/?cf-view" target="_blank" rel="noopener">View More</a>
+    </div>
+  </section>
+
+  <section class="dhpl-section dhpl-section-alt" id="technical-specs">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Technical Specs</div>
+        <h2 class="dhpl-section-heading">Salient Features</h2>
+      </div>
+      <div class="dhpl-split-grid">
+        <div class="dhpl-specs-table dhpl-reveal-anim dhpl-reveal-stagger-rows">
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">Project Name</span>
+            <span class="dhpl-specs-value">Dorjilung HEP</span>
+          </div>
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">River</span>
+            <span class="dhpl-specs-value">Kurichhu</span>
+          </div>
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">Installed Capacity</span>
+            <span class="dhpl-specs-value">1,125 MW (6 × 187.5 MW)</span>
+          </div>
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">Dam Type</span>
+            <span class="dhpl-specs-value">Concrete Gravity</span>
+          </div>
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">Dam Height</span>
+            <span class="dhpl-specs-value">85m above river bed</span>
+          </div>
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">Headrace Tunnel</span>
+            <span class="dhpl-specs-value">14.97 km</span>
+          </div>
+          <div class="dhpl-specs-row">
+            <span class="dhpl-specs-key">Target Commissioning</span>
+            <span class="dhpl-specs-value">December 2031</span>
+          </div>
+        </div>
+        <div class="dhpl-split-media dhpl-reveal-anim dhpl-reveal-right">
+          <img src="{% static 'images/5.jpg' %}" alt="Tunnel boring equipment at the Dorjilung project site" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section" id="progress">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Latest Updates</div>
+        <h2 class="dhpl-section-heading">Project Progress</h2>
+      </div>
+
+      <div class="dhpl-progress-block dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-progress-label">Overall Physical Progress</div>
+        <div class="dhpl-progress-bar-track">
+          <div class="dhpl-progress-bar-fill" data-progress="0.5"></div>
+        </div>
+        <div class="dhpl-progress-value">0.5%</div>
+      </div>
+
+      <h3 class="dhpl-block-heading">Key Milestones</h3>
+      <div class="dhpl-timeline dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        <div class="dhpl-timeline-item">
+          <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+          <div class="dhpl-timeline-content">
+            <div class="dhpl-timeline-meta">
+              <span class="dhpl-timeline-year">2004</span>
+              <span class="dhpl-timeline-status">Completed</span>
+            </div>
+            <h4>Project Identified in PSMP</h4>
+            <p>Installed capacity as 400 MW plant.</p>
+          </div>
+        </div>
+        <div class="dhpl-timeline-item">
+          <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+          <div class="dhpl-timeline-content">
+            <div class="dhpl-timeline-meta">
+              <span class="dhpl-timeline-year">2011</span>
+              <span class="dhpl-timeline-status">Completed</span>
+            </div>
+            <h4>PFS by Norplan of Norway</h4>
+            <p>Installed capacity assessed at 1,230 MW.</p>
+          </div>
+        </div>
+        <div class="dhpl-timeline-item">
+          <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+          <div class="dhpl-timeline-content">
+            <div class="dhpl-timeline-meta">
+              <span class="dhpl-timeline-year">2015</span>
+              <span class="dhpl-timeline-status">Completed</span>
+            </div>
+            <h4>DPR by DGPC with EIPL</h4>
+            <p>Installed capacity optimized at 1,125 MW.</p>
+          </div>
+        </div>
+        <div class="dhpl-timeline-item">
+          <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+          <div class="dhpl-timeline-content">
+            <div class="dhpl-timeline-meta">
+              <span class="dhpl-timeline-year">2019</span>
+              <span class="dhpl-timeline-status">Completed</span>
+            </div>
+            <h4>PSMP-2040 by JICA</h4>
+            <p>Earmarked for development by 2026–2030 (1,125 MW).</p>
+          </div>
+        </div>
+        <div class="dhpl-timeline-item">
+          <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+          <div class="dhpl-timeline-content">
+            <div class="dhpl-timeline-meta">
+              <span class="dhpl-timeline-year">2022 – 2025</span>
+              <span class="dhpl-timeline-status">Completed</span>
+            </div>
+            <h4>DPR Update with Support from World Bank</h4>
+            <p>Planning, design and detailed engineering including ESIA.</p>
+          </div>
+        </div>
+        <div class="dhpl-timeline-item">
+          <span class="dhpl-timeline-dot" aria-hidden="true"></span>
+          <div class="dhpl-timeline-content">
+            <div class="dhpl-timeline-meta">
+              <span class="dhpl-timeline-year">2025</span>
+              <span class="dhpl-timeline-status">Completed</span>
+            </div>
+            <h4>SPV Formation and Commercial Agreements</h4>
+            <p>DHPL incorporated between DGPC &amp; TPC.</p>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-outline-dark" href="/project/">View All</a>
+
+      <h3 class="dhpl-block-heading dhpl-block-heading-spaced">Key Achievements</h3>
+      <div class="dhpl-achievement-grid dhpl-reveal-anim dhpl-reveal-stagger">
+        <div class="dhpl-achievement-card">
+          <h4>Safety Training</h4>
+          <p>764 hours of employee safety training conducted to strengthen awareness and competency.</p>
+          <span class="dhpl-achievement-date">Jul 2026</span>
+        </div>
+        <div class="dhpl-achievement-card">
+          <h4>Accident Free Days</h4>
+          <p>550 accident-free days through continuous safety commitment.</p>
+          <span class="dhpl-achievement-date">Jul 2026</span>
+        </div>
+        <div class="dhpl-achievement-card">
+          <h4>1.3 Million Safe Man-Hours</h4>
+          <p>1.3 million safe man-hours achieved without a lost-time injury.</p>
+          <span class="dhpl-achievement-date">Jul 2026</span>
+        </div>
+        <div class="dhpl-achievement-card">
+          <h4>CLDP</h4>
+          <p>Successfully launched the CLDP program with 22 participants in the refresher course for household electrical wiring.</p>
+          <span class="dhpl-achievement-date">Jul 2026</span>
+        </div>
+      </div>
+
+      <h3 class="dhpl-block-heading dhpl-block-heading-spaced">Moments from the Field</h3>
+      <div class="dhpl-gallery-mosaic dhpl-reveal-anim dhpl-reveal-stagger">
+        <div class="g1"><img src="{% static 'images/3.jpg' %}" alt="Site safety briefing with the project team" loading="lazy"></div>
+        <div class="g2"><img src="{% static 'images/1.jpg' %}" alt="DHPL staff meeting on environmental and social management" loading="lazy"></div>
+        <div class="g3"><img src="{% static 'images/2.jpg' %}" alt="Occupational health and safety training session" loading="lazy"></div>
+        <div class="g4"><img src="{% static 'images/6.jpg' %}" alt="Community stakeholder gathering" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section dhpl-section-alt" id="structure">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Structure</div>
+        <h2 class="dhpl-section-heading">Organizational Hierarchy</h2>
+        <p class="dhpl-section-text">A clear chain of accountability — from the Board of Directors through statutory oversight committees to the divisions delivering the project day to day.</p>
+      </div>
+
+      <button class="dhpl-org-toggle" type="button" data-org-toggle aria-expanded="false" aria-controls="dhpl-org-chart">
+        <span data-org-toggle-label>Show Organogram</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-org-toggle-icon><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+
+      <div class="dhpl-org-chart" id="dhpl-org-chart" hidden>
+        {% if org_chart %}
+          {% image org_chart width-1100 %}
+        {% else %}
+          <p class="dhpl-docs-empty">The organogram chart will be published here soon.</p>
+        {% endif %}
+      </div>
+
+      <div class="dhpl-dept-accordion dhpl-reveal-anim dhpl-reveal-stagger">
+        {% for dept in departments %}
+        <div class="dhpl-dept-item">
+          <button class="dhpl-dept-header" type="button" data-dept-toggle aria-expanded="false">
+            <span>{{ dept.name }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dhpl-dept-body">
+            <div class="dhpl-dept-body-inner">
+              {% if dept.members.all %}
+              <div class="dhpl-member-grid">
+                {% for member in dept.members.all %}
+                <div class="dhpl-member-card">
+                  <div class="dhpl-member-avatar" aria-hidden="true">
+                    {% if member.photo %}
+                      {% image member.photo fill-96x96 %}
+                    {% else %}
+                      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+                    {% endif %}
+                  </div>
+                  <div class="dhpl-member-name">{{ member.name }}</div>
+                  <div class="dhpl-member-role">{{ member.role }}</div>
+                  {% if member.email %}<a class="dhpl-member-email" href="mailto:{{ member.email }}">{{ member.email }}</a>{% endif %}
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+                <p class="dhpl-docs-empty">Members will be added here soon.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="dhpl-docs-empty">The organizational structure will be published here soon.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section" id="sustainability">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Sustainability</div>
+        <h2 class="dhpl-section-heading">Environment &amp; Social</h2>
+      </div>
+
+      <div class="dhpl-es-grid dhpl-reveal-anim dhpl-reveal-split">
+        <div class="dhpl-es-card" id="environment">
+          <h3>Environment</h3>
+          <p>Our Environmental framework ensures the DHPP operates to the highest international standards — protecting Bhutan's pristine ecosystems, conserving biodiversity, and maintaining water and air quality.</p>
+          <div class="dhpl-tag-list">
+            <span class="dhpl-tag-pill">ESIA Documents</span>
+            <span class="dhpl-tag-pill">ESMP &amp; Monitoring</span>
+            <span class="dhpl-tag-pill">Biodiversity</span>
+          </div>
+          <button class="btn btn-outline-dark" type="button" data-modal-trigger="modal-environment">Explore Environment</button>
+        </div>
+        <div class="dhpl-es-card" id="social">
+          <h3>Social</h3>
+          <p>Our Social framework ensures community well-being — fair resettlement, local employment, cultural preservation, stakeholder engagement, and an accessible grievance redressal mechanism.</p>
+          <div class="dhpl-tag-list">
+            <span class="dhpl-tag-pill">Resettlement &amp; RAP</span>
+            <span class="dhpl-tag-pill">Community Development</span>
+            <span class="dhpl-tag-pill">GRM</span>
+          </div>
+          <button class="btn btn-outline-dark" type="button" data-modal-trigger="modal-social">Explore Social</button>
+        </div>
+      </div>
+
+      <h3 class="dhpl-block-heading dhpl-block-heading-spaced">Environment &amp; Social Documents</h3>
+      <div class="dhpl-docs-columns dhpl-reveal-anim dhpl-reveal-stagger">
+        <div class="dhpl-docs-column">
+          <div class="dhpl-docs-column-label">Environment</div>
+          {% if environment_documents %}
+            <ul class="dhpl-docs-list">
+              {% for doc in environment_documents %}
+                {% if doc.document %}
+                <li><a href="{{ doc.document.url }}">{{ doc.title }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="dhpl-docs-empty">Documents will be published here soon.</p>
+          {% endif %}
+        </div>
+        <div class="dhpl-docs-column">
+          <div class="dhpl-docs-column-label">Social</div>
+          {% if social_documents %}
+            <ul class="dhpl-docs-list">
+              {% for doc in social_documents %}
+                {% if doc.document %}
+                <li><a href="{{ doc.document.url }}">{{ doc.title }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="dhpl-docs-empty">Documents will be published here soon.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section" id="cldp">
+    <div class="dhpl-container">
+      <div class="dhpl-section-label">Community &amp; Local Development</div>
+      <h2 class="dhpl-section-heading">CLD Dashboard</h2>
+      {% if cldp_intro_text %}<p class="dhpl-section-text">{{ cldp_intro_text }}</p>{% endif %}
+
+      <div class="dhpl-cldp-stats-row dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        {% if cldp_stats.success_rate is not None %}
+        <div class="dhpl-cldp-stat dhpl-cldp-stat-primary">
+          <span class="dhpl-cldp-stat-value">{{ cldp_stats.success_rate }}%</span>
+          <span class="dhpl-cldp-stat-label">Overall Success Rate</span>
+          <span class="dhpl-cldp-stat-note">Based on total participation vs. target</span>
+        </div>
+        {% endif %}
+        <div class="dhpl-cldp-stat">
+          <span class="dhpl-cldp-stat-value">{{ cldp_stats.total }}</span>
+          <span class="dhpl-cldp-stat-label">Total Activities</span>
+        </div>
+        <div class="dhpl-cldp-stat">
+          <span class="dhpl-cldp-stat-value">{{ cldp_stats.completed }}</span>
+          <span class="dhpl-cldp-stat-label">Completed</span>
+        </div>
+        <div class="dhpl-cldp-stat">
+          <span class="dhpl-cldp-stat-value">{{ cldp_stats.in_progress }}</span>
+          <span class="dhpl-cldp-stat-label">In Progress</span>
+        </div>
+        <div class="dhpl-cldp-stat">
+          <span class="dhpl-cldp-stat-value">{{ cldp_stats.upcoming }}</span>
+          <span class="dhpl-cldp-stat-label">Upcoming</span>
+        </div>
+      </div>
+
+      {% if cldp_activities %}
+      <button class="dhpl-cldp-toggle" type="button" aria-expanded="true" aria-controls="cldp-home-grid">
+        <span data-cldp-toggle-label>Hide Details</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+
+      <div id="cldp-home-grid" class="dhpl-cldp-grid dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        {% for activity in cldp_activities %}
+          {% include "includes/cldp_activity_card.html" with activity=activity %}
+        {% endfor %}
+      </div>
+
+      <div class="dhpl-cldp-viewall">
+        <a class="btn btn-outline-dark" href="/cldp/">View Full Dashboard{% if cldp_more_count > 0 %} ({{ cldp_more_count }} more){% endif %}</a>
+      </div>
+      {% else %}
+      <p class="dhpl-section-text">CLDP activities will be published here soon.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="dhpl-section dhpl-section-alt" id="partners">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Collaboration</div>
+        <h2 class="dhpl-section-heading">Our Project Partners</h2>
+        <h3 class="dhpl-block-heading">A Collaborative Vision for the Future</h3>
+        <p class="dhpl-section-text">The Dorjilung Hydroelectric Power Project is a joint undertaking between the Druk Green Power Corporation (DGPC) and Tata Power Company Limited (TPCL), with the World Bank Group as the lead financier. Together, we are building a sustainable energy future for Bhutan and the region.</p>
+      </div>
+      <div class="dhpl-partner-grid dhpl-reveal-anim dhpl-reveal-stagger">
+        <div class="dhpl-partner-card">
+          <div class="dhpl-partner-logo dhpl-partner-logo-img"><img src="{% static 'images/dgpc_logo.png' %}" alt="Druk Green Power Corporation (DGPC) logo"></div>
+          <p>Leading Bhutan's renewable energy development</p>
+        </div>
+        <div class="dhpl-partner-card">
+          <div class="dhpl-partner-logo dhpl-partner-logo-img"><img src="{% static 'images/tata-power.png' %}" alt="Tata Power logo"></div>
+          <p>Bringing global expertise in power generation</p>
+        </div>
+        <div class="dhpl-partner-card">
+          <div class="dhpl-partner-logo dhpl-partner-logo-img"><img src="{% static 'images/world_bank.png' %}" alt="World Bank Group logo"></div>
+          <p>Supporting sustainable infrastructure development</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section" id="project-map">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Site Overview</div>
+        <h2 class="dhpl-section-heading">Project Map &amp; Site Conditions</h2>
+      </div>
+
+      <div class="dhpl-map-weather-grid dhpl-reveal-anim dhpl-reveal-split">
+        <div class="dhpl-map-panel dhpl-reveal-anim dhpl-reveal-left">
+          {% if project_locations %}
+            <div id="dhpl-project-map" class="dhpl-leaflet-map" role="img" aria-label="Map of the Dorjilung project site"></div>
+            {{ project_locations_json|json_script:"project-locations-data" }}
+            <div class="dhpl-map-legend">
+              {% for loc in project_locations %}
+                <span class="dhpl-map-legend-item"><span class="dhpl-map-legend-dot dhpl-map-legend-dot-{{ loc.location_type }}"></span>{{ loc.name }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="dhpl-tender-empty">
+              <p>Project locations will be added here soon.</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="dhpl-weather-panel dhpl-reveal-anim dhpl-reveal-right">
+          <h3>Weather &amp; Site Conditions</h3>
+          <div id="dhpl-weather-widget" class="dhpl-weather-widget" data-lat="27.7287" data-lng="91.1364">
+            <div class="dhpl-weather-placeholder">
+              <svg class="dhpl-weather-spinner" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              <p>Loading live weather data&hellip;</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section" id="news">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">Stay Informed</div>
+        <h2 class="dhpl-section-heading">News &amp; Media</h2>
+      </div>
+
+      <h3 class="dhpl-block-heading">Media Coverage</h3>
+      {% if media_coverage %}
+      <div class="dhpl-media-row-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        {% for item in media_coverage %}
+          {% include "includes/media_row.html" with item=item read_label="Read Article →" %}
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="dhpl-docs-empty">Media coverage will be published here soon.</p>
+      {% endif %}
+
+      <h3 class="dhpl-block-heading dhpl-block-heading-spaced">Press Releases</h3>
+      {% if press_releases %}
+      <div class="dhpl-media-row-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        {% for item in press_releases %}
+          {% include "includes/media_row.html" with item=item read_label="Read Full →" %}
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="dhpl-docs-empty">Press releases will be published here soon.</p>
+      {% endif %}
+
+      <a class="btn btn-outline-dark dhpl-news-view-all" href="/media-centre/">View All{% if more_news_count > 0 %} ({{ more_news_count }} more){% endif %}</a>
+    </div>
+  </section>
+</main>
+
+<div class="dhpl-video-modal" id="dhpl-video-modal" aria-hidden="true">
+  <div class="dhpl-video-modal-backdrop" data-video-close></div>
+  <div class="dhpl-video-modal-dialog" role="dialog" aria-modal="true" aria-label="Project introduction video">
+    <button class="dhpl-video-modal-close" type="button" data-video-close aria-label="Close video">✕</button>
+    <video
+      id="dhpl-intro-video"
+      class="dhpl-video-modal-player"
+      controls
+      preload="none"
+      playsinline
+      poster="{% static 'images/image1.jpg' %}"
+    >
+      <source src="{% static 'videos/dhpp-introduction.mp4' %}" type="video/mp4" />
+      Your browser does not support embedded video.
+    </video>
+  </div>
+</div>
+
+<div class="dhpl-info-modal" id="modal-environment" aria-hidden="true">
+  <div class="dhpl-info-modal-backdrop" data-modal-close></div>
+  <div class="dhpl-info-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-environment-title">
+    <button class="dhpl-info-modal-close" type="button" data-modal-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+    <div class="dhpl-info-modal-body">
+      <div class="dhpl-section-label">Sustainability</div>
+      <h2 id="modal-environment-title">Environment &amp; Sustainability</h2>
+      <p>At Dorjilung Hydropower Company Limited (DHPL), we are deeply committed to environmental stewardship. The Dorjilung Hydroelectric Power Project (DHPP) is designed and operated with a profound respect for Bhutan's pristine natural environment, which is central to our national identity and the well-being of our people. We believe that sustainable development is the only viable path forward, and we strive to ensure that our project contributes positively to the environment and the communities we serve.</p>
+
+      <h3>Our Environmental Commitment</h3>
+      <p>Our commitment to the environment is embedded in every phase of the project, from planning and construction to operation and decommissioning. We adhere to the highest international standards and best practices to minimize our environmental footprint. Our comprehensive Environmental and Social Management System (ESMS) ensures that all potential impacts are identified, assessed, and mitigated effectively.</p>
+
+      <h3>Key Environmental Initiatives</h3>
+      <ul>
+        <li><strong>Biodiversity Conservation:</strong> We are implementing a robust Biodiversity Management Plan to protect and enhance the rich flora and fauna in the project area. This includes habitat restoration, species monitoring, and the establishment of conservation corridors.</li>
+        <li><strong>Water Quality Management:</strong> We employ state-of-the-art systems to maintain the quality of the Kurichhu River. Continuous monitoring and treatment ensure that the river's ecological balance is preserved.</li>
+        <li><strong>Air Quality Control:</strong> During construction, we utilize dust suppression techniques and emission control measures to safeguard local air quality and the health of nearby communities.</li>
+        <li><strong>Waste Management:</strong> We follow a comprehensive waste management plan that prioritizes reduction, reuse, and recycling. All waste is handled in an environmentally sound manner.</li>
+        <li><strong>Climate Change Mitigation:</strong> As a clean energy project, DHPP significantly reduces greenhouse gas emissions compared to fossil fuel-based power generation. We are proud to contribute to Bhutan's commitment to remain carbon-neutral and support global climate goals.</li>
+      </ul>
+
+      <h3>International Standards &amp; Best Practices</h3>
+      <p>DHPP is guided by Good International Industry Practice (GIIP) and aligns with the Environmental, Health, and Safety (EHS) Guidelines of the World Bank Group. We have also adopted the Hydropower Sustainability Assessment Protocol (HSAP) to ensure that our project meets the highest environmental and social standards. Our commitment to excellence is reflected in our adherence to ISO 14001:2015, the international standard for environmental management systems.</p>
+    </div>
+  </div>
+</div>
+
+<div class="dhpl-info-modal" id="modal-social" aria-hidden="true">
+  <div class="dhpl-info-modal-backdrop" data-modal-close></div>
+  <div class="dhpl-info-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-social-title">
+    <button class="dhpl-info-modal-close" type="button" data-modal-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+    <div class="dhpl-info-modal-body">
+      <div class="dhpl-section-label">Community &amp; People</div>
+      <h2 id="modal-social-title">Social Responsibility</h2>
+      <p>At Dorjilung Hydropower Company Limited (DHPL), we recognize that our success is intertwined with the well-being of the communities we serve. The Dorjilung Hydroelectric Power Project (DHPP) is not just an engineering marvel; it is a catalyst for social progress and a testament to our commitment to inclusive and equitable development. We are dedicated to ensuring that the project brings lasting benefits to the people of Lhuentse Dzongkhag and contributes to the broader socio-economic fabric of Bhutan.</p>
+
+      <h3>Our Social Commitment</h3>
+      <p>Our social commitment is built on the principles of transparency, fairness, and respect for human rights. We engage with stakeholders in a meaningful and culturally appropriate manner, ensuring that their voices are heard and their concerns are addressed. Our approach is guided by international best practices, including the World Bank's Environmental and Social Standards (ESS).</p>
+
+      <h3>Key Social Initiatives</h3>
+      <ul>
+        <li><strong>Community Engagement &amp; Stakeholder Participation:</strong> We maintain an open and continuous dialogue with affected communities, local leaders, and civil society. Regular meetings, public consultations, and information dissemination sessions are held to ensure transparency and build trust.</li>
+        <li><strong>Land Acquisition &amp; Livelihood Restoration:</strong> We have implemented a comprehensive Land Acquisition and Livelihood Restoration Plan (LALRP) that provides fair compensation at replacement cost. We support affected households with livelihood restoration programs, transitional allowances, and access to new opportunities.</li>
+        <li><strong>Local Employment &amp; Skills Development:</strong> We prioritize the employment of local people in project-related activities. Our vocational training programs equip community members with valuable skills, enhancing their employability and contributing to local economic growth.</li>
+        <li><strong>Cultural Heritage Preservation:</strong> We respect and protect the cultural heritage and traditions of the local communities. Our Cultural Heritage Management Plan ensures that sacred sites and cultural practices are preserved and respected.</li>
+        <li><strong>Grievance Redressal Mechanism (GRM):</strong> We have established a robust GRM to address any concerns or complaints from the community. The mechanism is accessible, transparent, and responsive, with multiple channels for submitting grievances.</li>
+        <li><strong>Community Health &amp; Safety:</strong> We implement community health and safety plans to mitigate risks associated with the project. This includes awareness campaigns, health camps, and close coordination with local health authorities.</li>
+      </ul>
+
+      <h3>Gender Equality &amp; Social Inclusion</h3>
+      <p>DHPL is committed to promoting gender equality and social inclusion. We have developed a Gender and Vulnerability Action Plan to address the specific needs and concerns of women, youth, the elderly, and other vulnerable groups. We ensure that women have equal access to employment opportunities, training, and participation in decision-making processes. Our project aims to empower women and contribute to a more just and equitable society.</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="{% static 'js/dhpl-map.js' %}"></script>
+<script src="{% static 'js/dhpl-weather.js' %}"></script>
+{% endblock %}

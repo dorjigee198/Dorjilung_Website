@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main class="dhpl-page-body dhpl-page-body-plain">
+  <div class="dhpl-container">
+    <div class="dhpl-tender-intro">
+      <h1 class="dhpl-simple-title">{{ page.title }}</h1>
+      <div class="dhpl-tender-stats">
+        <span class="dhpl-tender-stat dhpl-tender-stat-open">{{ open_tenders|length }} Open</span>
+        <span class="dhpl-tender-stat dhpl-tender-stat-closed">{{ other_tenders|length }} Closed &amp; Cancelled</span>
+      </div>
+    </div>
+
+    <form class="dhpl-tender-search" method="get" role="search">
+      <div class="dhpl-search-field">
+        <svg class="dhpl-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input
+          type="search"
+          name="q"
+          value="{{ query }}"
+          placeholder="Search by title or reference number"
+          aria-label="Search tenders"
+          class="dhpl-tender-search-input"
+        >
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+      {% if query %}<a href="{% pageurl page %}" class="dhpl-text-link">Clear</a>{% endif %}
+    </form>
+
+    <div class="dhpl-tender-section-heading">
+      <h2 class="dhpl-block-heading">Open Tenders</h2>
+      <span class="dhpl-heading-count">{{ open_tenders|length }}</span>
+    </div>
+    {% if open_tenders %}
+    <div class="dhpl-tender-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+      {% for tender in open_tenders %}
+        {% include "tenders/includes/tender_row.html" %}
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="dhpl-tender-empty">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <p>{% if query %}No open tenders match "{{ query }}".{% else %}No open tenders at the moment — check back soon.{% endif %}</p>
+      </div>
+    {% endif %}
+
+    <div class="dhpl-tender-divider"></div>
+
+    <div class="dhpl-tender-section-heading">
+      <h2 class="dhpl-block-heading">Closed &amp; Cancelled Tenders</h2>
+      <span class="dhpl-heading-count">{{ other_tenders|length }}</span>
+    </div>
+    {% if other_tenders %}
+    <div class="dhpl-tender-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+      {% for tender in other_tenders %}
+        {% include "tenders/includes/tender_row.html" %}
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="dhpl-tender-empty">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <p>{% if query %}No closed or cancelled tenders match "{{ query }}".{% else %}No closed or cancelled tenders yet.{% endif %}</p>
+      </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

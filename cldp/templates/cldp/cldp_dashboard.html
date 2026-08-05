@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<main class="dhpl-page-body dhpl-page-body-plain">
+  <div class="dhpl-container">
+    <div class="dhpl-tender-intro">
+      <h1 class="dhpl-simple-title">CLD Dashboard</h1>
+    </div>
+
+    {% if intro_text %}<p class="dhpl-section-text" style="margin-bottom: 32px;">{{ intro_text }}</p>{% endif %}
+
+    <div class="dhpl-cldp-stats-row dhpl-reveal-anim dhpl-reveal-stagger-rows">
+      {% if stats.success_rate is not None %}
+      <div class="dhpl-cldp-stat dhpl-cldp-stat-primary">
+        <span class="dhpl-cldp-stat-value">{{ stats.success_rate }}%</span>
+        <span class="dhpl-cldp-stat-label">Overall Success Rate</span>
+        <span class="dhpl-cldp-stat-note">Based on total participation vs. target</span>
+      </div>
+      {% endif %}
+      <div class="dhpl-cldp-stat">
+        <span class="dhpl-cldp-stat-value">{{ stats.total }}</span>
+        <span class="dhpl-cldp-stat-label">Total Activities</span>
+      </div>
+      <div class="dhpl-cldp-stat">
+        <span class="dhpl-cldp-stat-value">{{ stats.completed }}</span>
+        <span class="dhpl-cldp-stat-label">Completed</span>
+      </div>
+      <div class="dhpl-cldp-stat">
+        <span class="dhpl-cldp-stat-value">{{ stats.in_progress }}</span>
+        <span class="dhpl-cldp-stat-label">In Progress</span>
+      </div>
+      <div class="dhpl-cldp-stat">
+        <span class="dhpl-cldp-stat-value">{{ stats.upcoming }}</span>
+        <span class="dhpl-cldp-stat-label">Upcoming</span>
+      </div>
+    </div>
+
+    {% if activities %}
+    <button class="dhpl-cldp-toggle" type="button" aria-expanded="true" aria-controls="cldp-all-grid">
+      <span data-cldp-toggle-label>Hide Details</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+
+    <div id="cldp-all-grid" class="dhpl-cldp-grid dhpl-reveal-anim dhpl-reveal-stagger-rows">
+      {% for activity in activities %}
+        {% include "includes/cldp_activity_card.html" with activity=activity %}
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="dhpl-tender-empty">
+        <p>No CLDP activities have been published yet — check back soon.</p>
+      </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}
