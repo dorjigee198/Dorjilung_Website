@@ -21,13 +21,21 @@ urlpatterns = [
 ]
 
 
+from django.conf.urls.static import static
+
+# Media (user-uploaded images/documents) isn't handled by WhiteNoise —
+# that only serves STATIC_ROOT. Serving it directly from Django like this
+# is fine for a small site without a fronting reverse proxy; move to
+# nginx or S3-backed storage before real production traffic.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
-    from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-    # Serve static and media files from development server
+    # Serve static files from the dev server directly out of
+    # STATICFILES_DIRS (source files, not the collected STATIC_ROOT) —
+    # WhiteNoise handles this in production instead.
     urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = urlpatterns + [
     path('', views_dhpl.home, name='dhpl_home'),

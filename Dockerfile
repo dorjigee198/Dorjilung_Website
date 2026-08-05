@@ -71,8 +71,14 @@ COPY --chown=wagtail:wagtail . .
 # Use user "wagtail" to run the build commands below and the server itself.
 USER wagtail
 
-# Collect static files.
-RUN python manage.py collectstatic --noinput --clear
+# Run under production settings from here on, so this is what actually
+# gets used both for collectstatic below and at runtime. The real
+# SECRET_KEY / ALLOWED_HOSTS / WAGTAILADMIN_BASE_URL are supplied via
+# "docker run -e ..." (see production.py) — a dummy SECRET_KEY is enough
+# for collectstatic, which doesn't do any cryptographic signing.
+ENV DJANGO_SETTINGS_MODULE=Dorjilung.settings.production
+
+RUN SECRET_KEY=build-time-only-not-used-in-production python manage.py collectstatic --noinput --clear
 
 # Runtime command that executes when "docker run" is called, it does the
 # following:
