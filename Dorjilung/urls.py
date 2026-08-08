@@ -21,13 +21,19 @@ urlpatterns = [
 ]
 
 
-from django.conf.urls.static import static
-
 # Media (user-uploaded images/documents) isn't handled by WhiteNoise —
-# that only serves STATIC_ROOT. Serving it directly from Django like this
-# is fine for a small site without a fronting reverse proxy; move to
-# nginx or S3-backed storage before real production traffic.
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# that only serves STATIC_ROOT. Django's own `static()` helper looks
+# like it would do this, but it silently no-ops whenever DEBUG=False
+# (a built-in guard, regardless of whether it's called inside an
+# `if settings.DEBUG:` block) — so it's registered directly here instead,
+# via the same underlying view `static()` would have used. Fine for a
+# small site without a fronting reverse proxy; move to nginx or
+# S3-backed storage before real production traffic.
+from django.views.static import serve as serve_static
+
+urlpatterns += [
+    re_path(r"^media/(?P<path>.*)$", serve_static, {"document_root": settings.MEDIA_ROOT}),
+]
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
