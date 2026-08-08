@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags wagtailcore_tags %}
 
 {% block content %}
 <section class="dhpl-hero">
@@ -536,6 +536,64 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dhpl-section dhpl-section-alt" id="notice-board">
+    <div class="dhpl-container">
+      <div class="dhpl-section-label">Notice Board</div>
+      <h2 class="dhpl-section-heading">Tenders &amp; Careers</h2>
+      <div class="dhpl-notice-grid dhpl-reveal-anim dhpl-reveal-split">
+
+        <div class="dhpl-notice-panel">
+          <div class="dhpl-notice-panel-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <h3>Tenders</h3>
+          </div>
+          {% if notice_tenders %}
+          <div class="dhpl-notice-list">
+            {% for t in notice_tenders %}
+            <a class="dhpl-notice-row" href="{% pageurl t %}">
+              <span class="dhpl-status-badge dhpl-status-{{ t.computed_status }}">{{ t.status_label }}</span>
+              <span class="dhpl-notice-row-text">
+                <strong>{{ t.title }}</strong>
+                <span>Closes {{ t.effective_closing_date|date:"d M Y" }}</span>
+              </span>
+              <svg class="dhpl-notice-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="dhpl-notice-empty">No tenders posted at the moment.</p>
+          {% endif %}
+          <a class="btn btn-outline-dark dhpl-notice-viewmore" href="/tenders/">View More Tenders</a>
+        </div>
+
+        <div class="dhpl-notice-panel">
+          <div class="dhpl-notice-panel-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <h3>Careers</h3>
+          </div>
+          {% if notice_jobs %}
+          <div class="dhpl-notice-list">
+            {% for j in notice_jobs %}
+            <a class="dhpl-notice-row" href="/careers/#job-modal-{{ j.pk }}">
+              <span class="dhpl-status-badge dhpl-status-{{ j.computed_status }}">{{ j.status_label }}</span>
+              <span class="dhpl-notice-row-text">
+                <strong>{{ j.title }}</strong>
+                <span>Closes {{ j.closing_date|date:"d M Y" }}</span>
+              </span>
+              <svg class="dhpl-notice-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="dhpl-notice-empty">No job openings at the moment.</p>
+          {% endif %}
+          <a class="btn btn-outline-dark dhpl-notice-viewmore" href="/careers/">View More Careers</a>
+        </div>
+
       </div>
     </div>
   </section>

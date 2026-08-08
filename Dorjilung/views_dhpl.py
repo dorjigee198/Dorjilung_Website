@@ -1,14 +1,35 @@
 from django.shortcuts import render
 
+from careers.models import JobOpening
 from cldp.models import CLDPActivity, CLDPSettings, cldp_dashboard_stats
 from newsroom.models import GalleryCategory, GalleryImage, NewsItem
 from projectmap.models import ProjectLocation
 from structure.models import Department, OrganogramSettings
 from sustainability.models import EnvironmentSocialDocument
+from tenders.models import TenderPage
 
 MEDIA_COVERAGE_LIMIT = 5
 PRESS_RELEASE_LIMIT = 5
 CLDP_HOME_LIMIT = 4
+NOTICE_BOARD_LIMIT = 3
+
+
+def _notice_board_pick(items, count=NOTICE_BOARD_LIMIT):
+    """
+    Open items first (soonest-closing first), then most-recently-closed
+    ones filling any remaining slots — used for the homepage notice
+    board, so it leads with whatever's actually actionable.
+    """
+    open_items = sorted(
+        (i for i in items if i.computed_status == "open"),
+        key=lambda i: i.closing_date,
+    )
+    other_items = sorted(
+        (i for i in items if i.computed_status != "open"),
+        key=lambda i: i.closing_date,
+        reverse=True,
+    )
+    return (open_items + other_items)[:count]
 
 SECTION_BLURBS = {
     'About': "Learn about DHPL's mandate, leadership, and role in Bhutan's hydropower sector.",
@@ -44,6 +65,9 @@ def home(request):
     cldp_activities = CLDPActivity.objects.prefetch_related('images__image')
     cldp_settings = CLDPSettings.load(request_or_site=request)
 
+    notice_tenders = _notice_board_pick(list(TenderPage.objects.live()))
+    notice_jobs = _notice_board_pick(list(JobOpening.objects.all()))
+
     context = {
         'environment_documents': [d for d in es_documents if d.category == 'environment'],
         'social_documents': [d for d in es_documents if d.category == 'social'],
@@ -58,6 +82,8 @@ def home(request):
         'cldp_activities': cldp_activities[:CLDP_HOME_LIMIT],
         'cldp_more_count': max(cldp_activities.count() - CLDP_HOME_LIMIT, 0),
         'cldp_stats': cldp_dashboard_stats(cldp_activities),
+        'notice_tenders': notice_tenders,
+        'notice_jobs': notice_jobs,
     }
     return render(request, 'dhpl_home.html', context)
 

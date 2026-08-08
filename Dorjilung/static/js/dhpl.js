@@ -201,6 +201,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if (modal.classList.contains('open')) closeInfoModal(modal);
       });
     });
+
+    // Deep links — visiting a page with #some-modal-id in the URL (e.g.
+    // from the homepage notice board) opens that modal automatically.
+    if (window.location.hash) {
+      var targetModal = document.getElementById(window.location.hash.slice(1));
+      if (targetModal && targetModal.classList.contains('dhpl-info-modal')) {
+        openInfoModal(targetModal);
+      }
+    }
   }
 
   // Structure: organogram chart show/hide toggle
