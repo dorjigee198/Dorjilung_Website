@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 
 from wagtail.admin.panels import FieldPanel
@@ -21,16 +22,27 @@ class ProjectLocation(models.Model):
 
     name = models.CharField(max_length=255)
     location_type = models.CharField(max_length=20, choices=LOCATION_TYPE_CHOICES)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(
+        help_text="Decimal degrees only, e.g. 27.7287 — not the whole \"27.7287, 91.1364\" pair from Google Maps.",
+    )
+    longitude = models.FloatField(
+        help_text="Decimal degrees only, e.g. 91.1364 — no ° symbol or N/E/S/W letters.",
+    )
     description = models.TextField(blank=True)
     order = models.PositiveIntegerField(default=0)
 
     panels = [
         FieldPanel("name"),
         FieldPanel("location_type"),
-        FieldPanel("latitude"),
-        FieldPanel("longitude"),
+        # A plain text input, not the browser's native number input — the
+        # latter silently empties itself (no validation error at all) if
+        # it receives anything other than digits/a single decimal point,
+        # which is exactly what happens when someone pastes a coordinate
+        # copied straight from Google Maps (comma-separated pair, or a
+        # value with a ° symbol). A text input lets Django's own
+        # validation give a clear "Enter a number" message instead.
+        FieldPanel("latitude", widget=forms.TextInput),
+        FieldPanel("longitude", widget=forms.TextInput),
         FieldPanel("description"),
         FieldPanel("order"),
     ]
