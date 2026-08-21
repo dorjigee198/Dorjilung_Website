@@ -37,6 +37,18 @@
       </div>
     </div>
 
+    {% if notices_newest_first %}
+    <div class="dhpl-sticky-note-stack">
+      {% for notice in notices_newest_first %}
+      <div class="dhpl-sticky-note">
+        <span class="dhpl-sticky-note-date">{{ notice.date|date:"d M Y" }}</span>
+        <p>{{ notice.text }}</p>
+        {% if notice.document %}<a class="dhpl-news-link" href="{{ notice.document.url }}">Download →</a>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="dhpl-specs-table dhpl-tender-key-dates">
       <div class="dhpl-specs-row">
         <span class="dhpl-specs-key">Publish Date</span>

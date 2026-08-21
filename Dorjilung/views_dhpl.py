@@ -5,7 +5,7 @@ from cldp.models import CLDPActivity, CLDPSettings, cldp_dashboard_stats
 from home.models import Achievement, Milestone
 from newsroom.models import GalleryCategory, GalleryImage, NewsItem
 from projectmap.models import ProjectLocation
-from structure.models import Department, OrganogramSettings
+from structure.models import BoardMember, Department, OrganogramSettings
 from sustainability.models import EnvironmentSocialDocument
 from tenders.models import TenderPage
 
@@ -45,6 +45,7 @@ SECTION_BLURBS = {
 
 def home(request):
     es_documents = EnvironmentSocialDocument.objects.select_related('document')
+    board_members = BoardMember.objects.select_related('photo')
     departments = Department.objects.prefetch_related('members__photo')
     org_settings = OrganogramSettings.load(request_or_site=request)
 
@@ -81,6 +82,7 @@ def home(request):
         'achievements_preview': achievements[:ACHIEVEMENT_HOME_LIMIT],
         'environment_documents': [d for d in es_documents if d.category == 'environment'],
         'social_documents': [d for d in es_documents if d.category == 'social'],
+        'board_members': board_members,
         'departments': departments,
         'org_chart': org_settings.chart_image,
         'media_coverage': media_coverage_qs[:MEDIA_COVERAGE_LIMIT],

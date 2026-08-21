@@ -1035,6 +1035,78 @@ img {
 .dhpl-dept-body-inner {
   padding: 4px 24px 24px;
 }
+/* Organizational Hierarchy: Board of Directors — permanent grid,
+   chairman first, 3 in the top row and 4 in the second. */
+.dhpl-board-grid {
+  margin: 8px 0 36px;
+}
+.dhpl-board-row {
+  display: grid;
+  gap: 24px;
+}
+.dhpl-board-row-3 {
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 24px;
+}
+.dhpl-board-row-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.dhpl-board-card {
+  background: #fff;
+  border: 1px solid #e7eaf1;
+  border-radius: 12px;
+  padding: 26px 16px 22px;
+  text-align: center;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.dhpl-board-card:hover {
+  box-shadow: 0 12px 30px rgba(10, 31, 61, 0.1);
+  transform: translateY(-3px);
+}
+.dhpl-board-avatar {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: #eef1f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b9c1cf;
+  overflow: hidden;
+}
+.dhpl-board-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dhpl-board-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.dhpl-board-role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+@media (max-width: 900px) {
+  .dhpl-board-row-3,
+  .dhpl-board-row-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .dhpl-board-row-3,
+  .dhpl-board-row-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .dhpl-member-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -2644,6 +2716,67 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   font-size: 12px;
   font-weight: 600;
   color: #8792a3;
+}
+
+/* Tender notices — sticky note look: latest one on the /tenders/ list
+   row, full history on the tender's own page. */
+.dhpl-sticky-note {
+  position: relative;
+  background: #fff6c8;
+  border-radius: 4px;
+  padding: 16px 18px 14px;
+  box-shadow: 0 6px 16px rgba(20, 15, 0, 0.14), 0 2px 4px rgba(20, 15, 0, 0.08);
+  transform: rotate(-1.2deg);
+  font-size: 13.5px;
+  color: #5c5220;
+}
+.dhpl-sticky-note::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 22px;
+  width: 34px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform: rotate(-3deg);
+}
+.dhpl-sticky-note-date {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8a7b1f;
+  margin-bottom: 6px;
+}
+.dhpl-sticky-note p {
+  margin: 0;
+  line-height: 1.55;
+}
+.dhpl-sticky-note .dhpl-news-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12.5px;
+}
+.dhpl-sticky-note-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin: 4px 0 28px;
+}
+.dhpl-sticky-note-stack .dhpl-sticky-note {
+  flex: 1 1 260px;
+  max-width: 340px;
+}
+.dhpl-sticky-note-stack .dhpl-sticky-note:nth-child(even) {
+  transform: rotate(1deg);
+}
+.dhpl-sticky-note-compact {
+  margin-top: 12px;
+  max-width: 360px;
+  font-size: 12.5px;
+  padding: 12px 14px 10px;
 }
 
 /* Detail page status banner */

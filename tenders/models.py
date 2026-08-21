@@ -44,7 +44,7 @@ class TenderIndexPage(Page):
         tenders_qs = (
             TenderPage.objects.live()
             .descendant_of(self)
-            .prefetch_related("sub_tenders", "documents", "extensions")
+            .prefetch_related("sub_tenders", "documents", "extensions", "notices")
         )
         if query:
             tenders_qs = tenders_qs.filter(
@@ -100,6 +100,7 @@ class TenderPage(Page):
         InlinePanel("sub_tenders", label="Sub-tenders"),
         InlinePanel("documents", label="Documents"),
         InlinePanel("extensions", label="Extensions"),
+        InlinePanel("notices", label="Notices"),
     ]
 
     search_fields = Page.search_fields + [
@@ -113,6 +114,14 @@ class TenderPage(Page):
 
     class Meta:
         ordering = ["-closing_date"]
+
+    @property
+    def latest_notice(self):
+        """The most recent notice, if any — shown as a sticky note on the /tenders/ list row."""
+        notices = list(self.notices.all())
+        if not notices:
+            return None
+        return max(notices, key=lambda n: (n.date, n.pk))
 
     @property
     def latest_extension(self):
@@ -156,6 +165,9 @@ class TenderPage(Page):
 
         context["extensions_newest_first"] = sorted(
             self.extensions.all(), key=lambda e: (e.issued_date, e.pk), reverse=True
+        )
+        context["notices_newest_first"] = sorted(
+            self.notices.all(), key=lambda n: (n.date, n.pk), reverse=True
         )
 
         grouped_documents = {}
@@ -242,4 +254,32 @@ class TenderExtension(Orderable):
         FieldPanel("issued_date"),
         FieldPanel("remarks"),
         FieldPanel("notice"),
+    ]
+
+
+class TenderNotice(Orderable):
+    """
+    A free-form update or announcement for a tender — a rescheduled
+    pre-bid meeting, an issued addendum, a clarification, etc. Distinct
+    from TenderExtension, which specifically changes the closing date
+    and drives computed_status. Shown as a "sticky note": the single
+    latest one on the tender's row in the /tenders/ list, and the full
+    history (newest first) on the tender's own page.
+    """
+
+    page = ParentalKey(TenderPage, on_delete=models.CASCADE, related_name="notices")
+    text = models.TextField(help_text='e.g. "Pre-bid meeting rescheduled to 15 March 2027."')
+    date = models.DateField(default=timezone.now)
+    document = models.ForeignKey(
+        "wagtaildocs.Document",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("text"),
+        FieldPanel("date"),
+        FieldPanel("document"),
     ]

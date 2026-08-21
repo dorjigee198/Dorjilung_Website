@@ -248,6 +248,44 @@
         <p class="dhpl-section-text">A clear chain of accountability — from the Board of Directors through statutory oversight committees to the divisions delivering the project day to day.</p>
       </div>
 
+      <h3 class="dhpl-block-heading">Board of Directors</h3>
+      {% if board_members %}
+      <div class="dhpl-board-grid dhpl-reveal-anim dhpl-reveal-stagger">
+        <div class="dhpl-board-row dhpl-board-row-3">
+          {% for member in board_members|slice:":3" %}
+          <div class="dhpl-board-card">
+            <div class="dhpl-board-avatar" aria-hidden="true">
+              {% if member.photo %}
+                {% image member.photo fill-160x160 %}
+              {% else %}
+                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+              {% endif %}
+            </div>
+            <div class="dhpl-board-name">{{ member.name }}</div>
+            <div class="dhpl-board-role">{{ member.designation }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="dhpl-board-row dhpl-board-row-4">
+          {% for member in board_members|slice:"3:" %}
+          <div class="dhpl-board-card">
+            <div class="dhpl-board-avatar" aria-hidden="true">
+              {% if member.photo %}
+                {% image member.photo fill-160x160 %}
+              {% else %}
+                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+              {% endif %}
+            </div>
+            <div class="dhpl-board-name">{{ member.name }}</div>
+            <div class="dhpl-board-role">{{ member.designation }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+      <p class="dhpl-docs-empty">Board members will be published here soon.</p>
+      {% endif %}
+
       <button class="dhpl-org-toggle" type="button" data-org-toggle aria-expanded="false" aria-controls="dhpl-org-chart">
         <span data-org-toggle-label>Show Organogram</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-org-toggle-icon><polyline points="6 9 12 15 18 9"/></svg>

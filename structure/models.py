@@ -7,6 +7,44 @@ from wagtail.snippets.models import register_snippet
 
 
 @register_snippet
+class BoardMember(models.Model):
+    """
+    A Board of Directors member, shown in a permanent photo grid right
+    under "Organizational Hierarchy" — unlike Department/TeamMember
+    below, this isn't tucked behind a click-to-expand accordion, since
+    the board is meant to be visible at a glance. Order controls both
+    display order and row placement (the homepage shows the first 3 in
+    one row, the rest in the next), so keep the chairman first.
+    """
+
+    name = models.CharField(max_length=255)
+    designation = models.CharField(max_length=255)
+    photo = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    order = models.PositiveIntegerField(default=0)
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("designation"),
+        FieldPanel("photo"),
+        FieldPanel("order"),
+    ]
+
+    class Meta:
+        ordering = ["order", "name"]
+        verbose_name = "Board Member"
+        verbose_name_plural = "Board Members"
+
+    def __str__(self):
+        return f"{self.name} — {self.designation}"
+
+
+@register_snippet
 class Department(models.Model):
     """
     A group in the organogram (e.g. "Board of Directors", "Top
