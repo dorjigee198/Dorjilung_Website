@@ -1,0 +1,6 @@
+<div class="dhpl-bullet-card">
+  {% if self.heading %}<h3 class="dhpl-spec-card-heading">{{ self.heading }}</h3>{% endif %}
+  <ul class="dhpl-bullet-list">
+    {% for item in self.items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,8 @@
+<div class="dhpl-stream-full dhpl-stat-cards">
+  {% for card in self.cards %}
+  <div class="dhpl-stat-card">
+    <div class="dhpl-stat-card-value">{{ card.value }}</div>
+    <div class="dhpl-stat-card-label">{{ card.label }}</div>
+  </div>
+  {% endfor %}
+</div>

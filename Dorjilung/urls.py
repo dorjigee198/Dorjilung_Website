@@ -46,7 +46,8 @@ if settings.DEBUG:
 urlpatterns = urlpatterns + [
     path('', views_dhpl.home, name='dhpl_home'),
     path('about/', lambda req: views_dhpl.section_placeholder(req, 'About')),
-    path('project/', lambda req: views_dhpl.section_placeholder(req, 'Project')),
+    # 'project/' is intentionally not listed here — it's a real Wagtail
+    # page (ProjectPage) served by the wagtail_urls catch-all below.
     path('environment/', lambda req: views_dhpl.section_placeholder(req, 'Environment & Social')),
     path('media-centre/', views_dhpl.media_centre, name='media_centre'),
     # 'tenders/' is intentionally not listed here — it's a real Wagtail

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main class="dhpl-page-body dhpl-page-body-plain">
+  <div class="dhpl-container">
+    {% if page.body %}
+    <div class="dhpl-project-stream">
+      {% include_block page.body %}
+    </div>
+    {% else %}
+    <div class="dhpl-placeholder-card">
+      <span class="tag">Coming soon</span>
+      <p>Full details on the Dorjilung Hydroelectric Power Project will be published here soon.</p>
+    </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

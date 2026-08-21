@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from careers.models import JobOpening
 from cldp.models import CLDPActivity, CLDPSettings, cldp_dashboard_stats
+from home.models import Achievement, Milestone
 from newsroom.models import GalleryCategory, GalleryImage, NewsItem
 from projectmap.models import ProjectLocation
 from structure.models import Department, OrganogramSettings
@@ -12,6 +13,8 @@ MEDIA_COVERAGE_LIMIT = 5
 PRESS_RELEASE_LIMIT = 5
 CLDP_HOME_LIMIT = 4
 NOTICE_BOARD_LIMIT = 3
+MILESTONE_HOME_LIMIT = 6
+ACHIEVEMENT_HOME_LIMIT = 4
 
 
 def _notice_board_pick(items, count=NOTICE_BOARD_LIMIT):
@@ -68,7 +71,14 @@ def home(request):
     notice_tenders = _notice_board_pick(list(TenderPage.objects.live()))
     notice_jobs = _notice_board_pick(list(JobOpening.objects.all()))
 
+    milestones = Milestone.objects.all()
+    achievements = Achievement.objects.all()
+
     context = {
+        'milestones': milestones,
+        'milestones_preview': milestones[:MILESTONE_HOME_LIMIT],
+        'achievements': achievements,
+        'achievements_preview': achievements[:ACHIEVEMENT_HOME_LIMIT],
         'environment_documents': [d for d in es_documents if d.category == 'environment'],
         'social_documents': [d for d in es_documents if d.category == 'social'],
         'departments': departments,
