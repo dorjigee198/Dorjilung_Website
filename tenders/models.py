@@ -3,12 +3,15 @@ import urllib.parse
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.html import strip_tags
+from django.utils.text import Truncator
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 
 STATUS_OPEN = "open"
 STATUS_CLOSED = "closed"
@@ -19,6 +22,41 @@ STATUS_LABELS = {
     STATUS_CLOSED: "Closed",
     STATUS_CANCELLED: "Cancelled",
 }
+
+
+@register_snippet
+class DocumentCategory(models.Model):
+    """
+    A heading that tender documents can be grouped under on the tender page
+    (e.g. "Annexures", "Addendum / Clarification", "BOQ / Price Schedule").
+    Managed by admins under Snippets - a starter set is seeded by migration,
+    and new categories can be added at any time.
+    """
+
+    name = models.CharField(max_length=100, unique=True)
+    sort_order = models.PositiveIntegerField(
+        default=0,
+        help_text="Lower numbers appear first on the tender page.",
+    )
+    collapsed_by_default = models.BooleanField(
+        default=False,
+        help_text="Start this group collapsed on the tender page. Useful for "
+        "long lists such as annexures.",
+    )
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("sort_order"),
+        FieldPanel("collapsed_by_default"),
+    ]
+
+    class Meta:
+        verbose_name = "Document category"
+        verbose_name_plural = "Document categories"
+        ordering = ["sort_order", "name"]
+
+    def __str__(self):
+        return self.name
 
 
 class TenderIndexPage(Page):
@@ -52,13 +90,21 @@ class TenderIndexPage(Page):
             )
         tenders = list(tenders_qs)
 
+        # Both lists show the most recently published tender first. "Publish
+        # Date" is an editable field on the tender, so admins can reorder any
+        # tender by adjusting it; pk is the tiebreaker so newer entries with
+        # an identical publish date still sort above older ones.
+        def newest_first(t):
+            return (t.publish_date, t.pk)
+
         open_tenders = sorted(
             (t for t in tenders if t.computed_status == STATUS_OPEN),
-            key=lambda t: t.effective_closing_date,
+            key=newest_first,
+            reverse=True,
         )
         other_tenders = sorted(
             (t for t in tenders if t.computed_status != STATUS_OPEN),
-            key=lambda t: t.effective_closing_date,
+            key=newest_first,
             reverse=True,
         )
 
@@ -76,6 +122,13 @@ class TenderPage(Page):
     """
 
     reference_no = models.CharField(max_length=255)
+    summary = models.CharField(
+        max_length=400,
+        blank=True,
+        help_text="One or two plain sentences shown under the tender title in "
+        "the public tender list. If left blank, the start of the description "
+        "below is used instead.",
+    )
     description = RichTextField(blank=True)
     publish_date = models.DateTimeField(
         default=timezone.now,
@@ -91,6 +144,7 @@ class TenderPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("reference_no"),
+        FieldPanel("summary"),
         FieldPanel("publish_date"),
         FieldPanel("opening_date"),
         FieldPanel("closing_date"),
@@ -105,6 +159,7 @@ class TenderPage(Page):
 
     search_fields = Page.search_fields + [
         index.SearchField("reference_no"),
+        index.SearchField("summary"),
         index.SearchField("description"),
         index.FilterField("cancelled"),
     ]
@@ -113,7 +168,18 @@ class TenderPage(Page):
     subpage_types = []
 
     class Meta:
-        ordering = ["-closing_date"]
+        # Newest tender first — matches the public listing order and keeps
+        # the Wagtail admin explorer consistent with it.
+        ordering = ["-publish_date"]
+
+    @property
+    def listing_summary(self):
+        """Short teaser shown under the title on the /tenders/ list row.
+        Uses the Summary field when set, otherwise falls back to the opening
+        of the rich-text description with formatting stripped."""
+        if self.summary:
+            return self.summary
+        return Truncator(strip_tags(self.description)).words(28, truncate="…")
 
     @property
     def latest_notice(self):
@@ -170,15 +236,43 @@ class TenderPage(Page):
             self.notices.all(), key=lambda n: (n.date, n.pk), reverse=True
         )
 
-        grouped_documents = {}
-        ungrouped_documents = []
-        for doc in self.documents.all():
+        # Documents are split three ways, in this order of precedence:
+        #   1. a sub-tender name  -> grouped under that heading (flat list)
+        #   2. a category         -> grouped under a collapsible category heading
+        #   3. neither            -> shown as a plain flat list, no dropdown
+        # Rows with no uploaded file are dropped so group counts stay honest.
+        docs = self.documents.filter(document__isnull=False).select_related(
+            "document", "category"
+        )
+        sub_tender_documents = {}
+        by_category = {}
+        uncategorised_documents = []
+        for doc in docs:
             if doc.sub_tender_name:
-                grouped_documents.setdefault(doc.sub_tender_name, []).append(doc)
+                sub_tender_documents.setdefault(doc.sub_tender_name, []).append(doc)
+            elif doc.category_id:
+                by_category.setdefault(doc.category, []).append(doc)
             else:
-                ungrouped_documents.append(doc)
-        context["grouped_documents"] = grouped_documents
-        context["ungrouped_documents"] = ungrouped_documents
+                uncategorised_documents.append(doc)
+
+        category_document_groups = [
+            {
+                "name": category.name,
+                "documents": group,
+                "collapsed": category.collapsed_by_default,
+            }
+            for category, group in sorted(
+                by_category.items(),
+                key=lambda item: (item[0].sort_order, item[0].name.lower()),
+            )
+        ]
+
+        context["uncategorised_documents"] = uncategorised_documents
+        context["sub_tender_documents"] = sub_tender_documents
+        context["category_document_groups"] = category_document_groups
+        context["has_documents"] = bool(
+            uncategorised_documents or sub_tender_documents or category_document_groups
+        )
         return context
 
 
@@ -216,16 +310,28 @@ class TenderDocument(Orderable):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    category = models.ForeignKey(
+        "tenders.DocumentCategory",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Groups this document under a collapsible heading on the "
+        "tender page. Manage the list under Snippets - Document categories. "
+        "Leave blank to list it under \"Other Documents\".",
+    )
     sub_tender_name = models.CharField(
         max_length=255,
         blank=True,
         help_text="Optional — if this document belongs to a specific sub-tender, "
-        "enter its title exactly as entered above so it can be grouped correctly.",
+        "enter its title exactly as entered above so it can be grouped correctly. "
+        "Takes precedence over Category.",
     )
 
     panels = [
         FieldPanel("title"),
         FieldPanel("document"),
+        FieldPanel("category"),
         FieldPanel("sub_tender_name"),
     ]
 

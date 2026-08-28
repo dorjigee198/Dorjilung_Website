@@ -2478,6 +2478,13 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   color: var(--muted);
   letter-spacing: 0.3px;
 }
+.dhpl-tender-lead {
+  margin: 14px 0 0;
+  max-width: 70ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft, #3a4453);
+}
 .dhpl-tender-detail {
   max-width: 860px;
 }
@@ -2621,6 +2628,13 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
 }
 .dhpl-tender-row-title a:hover {
   color: var(--accent-dark);
+}
+.dhpl-tender-row-summary {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #4a5568;
+  max-width: 62ch;
 }
 .dhpl-tender-row-ref {
   display: inline-block;
@@ -2905,6 +2919,55 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   font-weight: 700;
   color: var(--ink);
   margin: 20px 0 8px;
+}
+.dhpl-doc-group {
+  border: 1px solid #e3e7ee;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+.dhpl-doc-group > .dhpl-tender-docs-list {
+  margin: 0;
+  padding: 4px 16px 8px;
+}
+.dhpl-doc-group-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  user-select: none;
+}
+.dhpl-doc-group-summary::-webkit-details-marker {
+  display: none;
+}
+.dhpl-doc-group-chevron {
+  flex-shrink: 0;
+  color: #8792a3;
+  transition: transform 0.15s ease;
+}
+.dhpl-doc-group[open] .dhpl-doc-group-chevron {
+  transform: rotate(90deg);
+}
+.dhpl-doc-group-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.dhpl-doc-group-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b6577;
+  background: #f2f4f8;
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+.dhpl-doc-group[open] > .dhpl-doc-group-summary {
+  border-bottom: 1px solid #eef1f5;
 }
 
 .dhpl-tender-extensions {
