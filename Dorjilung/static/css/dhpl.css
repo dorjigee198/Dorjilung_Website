@@ -2581,6 +2581,61 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   gap: 16px;
   margin-bottom: 8px;
 }
+
+/* A tender group — one collapsible panel wrapping several tender rows,
+   sitting inline in the list alongside ungrouped rows. */
+.dhpl-tender-group {
+  border: 1px solid #e3e7ee;
+  border-radius: 12px;
+  background: #f8f9fc;
+}
+.dhpl-tender-group-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  user-select: none;
+}
+.dhpl-tender-group-summary::-webkit-details-marker {
+  display: none;
+}
+.dhpl-tender-group-chevron {
+  flex-shrink: 0;
+  color: #8792a3;
+  transition: transform 0.15s ease;
+}
+.dhpl-tender-group[open] .dhpl-tender-group-chevron {
+  transform: rotate(90deg);
+}
+.dhpl-tender-group-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.dhpl-tender-group-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b6577;
+  background: #eef1f6;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.dhpl-tender-group-desc {
+  margin: -6px 22px 0;
+  font-size: 13px;
+  color: #5b6577;
+}
+.dhpl-tender-group-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 16px 16px;
+}
 .dhpl-tender-row {
   display: flex;
   flex-wrap: wrap;

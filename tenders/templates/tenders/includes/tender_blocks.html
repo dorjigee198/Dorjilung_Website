@@ -1,0 +1,24 @@
+{% load wagtailcore_tags %}
+{% comment %}Expects `blocks` — the list from TenderIndexPage.get_context, each entry
+either a lone tender or a tender group panel.{% endcomment %}
+<div class="dhpl-tender-list dhpl-reveal-anim dhpl-reveal-stagger-rows">
+  {% for block in blocks %}
+    {% if block.is_group %}
+      <details class="dhpl-tender-group"{% if not block.collapsed %} open{% endif %}>
+        <summary class="dhpl-tender-group-summary">
+          <svg class="dhpl-tender-group-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          <span class="dhpl-tender-group-name">{{ block.group.name }}</span>
+          <span class="dhpl-tender-group-count">{{ block.tenders|length }}</span>
+        </summary>
+        {% if block.group.description %}<p class="dhpl-tender-group-desc">{{ block.group.description }}</p>{% endif %}
+        <div class="dhpl-tender-group-body">
+          {% for tender in block.tenders %}
+            {% include "tenders/includes/tender_row.html" %}
+          {% endfor %}
+        </div>
+      </details>
+    {% else %}
+      {% include "tenders/includes/tender_row.html" with tender=block.tender %}
+    {% endif %}
+  {% endfor %}
+</div>

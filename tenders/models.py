@@ -60,6 +60,43 @@ class DocumentCategory(models.Model):
         return self.name
 
 
+@register_snippet
+class TenderGroup(models.Model):
+    """
+    An optional grouping for related tenders (e.g. every package and
+    addendum belonging to "DCP-I"). On the /tenders/ list the group's
+    tenders are shown together in one collapsible panel. A tender with no
+    group is listed on its own. Groups and lone tenders are ordered
+    against each other by how recently they were published, so a group
+    jumps to the top whenever a new tender is added to it.
+    """
+
+    name = models.CharField(max_length=150, unique=True)
+    description = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Optional one-line note shown under the group heading.",
+    )
+    collapsed_by_default = models.BooleanField(
+        default=False,
+        help_text="Start this panel collapsed on the tender list.",
+    )
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("description"),
+        FieldPanel("collapsed_by_default"),
+    ]
+
+    class Meta:
+        verbose_name = "Tender group"
+        verbose_name_plural = "Tender groups"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
 class TenderIndexPage(Page):
     """
     The single public tender listing page, at /tenders/. The nav
@@ -83,6 +120,7 @@ class TenderIndexPage(Page):
         tenders_qs = (
             TenderPage.objects.live()
             .descendant_of(self)
+            .select_related("group")
             .prefetch_related("sub_tenders", "documents", "extensions", "notices")
         )
         if query:
@@ -91,10 +129,9 @@ class TenderIndexPage(Page):
             )
         tenders = list(tenders_qs)
 
-        # Both lists show the most recently published tender first. "Publish
-        # Date" is an editable field on the tender, so admins can reorder any
-        # tender by adjusting it; pk is the tiebreaker so newer entries with
-        # an identical publish date still sort above older ones.
+        # "Publish Date" is an editable field, so admins reorder a tender by
+        # adjusting it; pk is the tiebreaker so newer entries with an
+        # identical publish date still sort above older ones.
         def newest_first(t):
             return (t.publish_date, t.pk)
 
@@ -109,8 +146,38 @@ class TenderIndexPage(Page):
             reverse=True,
         )
 
+        def as_blocks(section_tenders):
+            """Turn a newest-first tender list into a list of render blocks:
+            one per lone (ungrouped) tender, one per tender group present.
+            Groups and lone tenders are interleaved by recency — a group
+            takes the publish date of its newest tender — so whatever was
+            published most recently is on top, group or not."""
+            grouped = {}
+            blocks = []
+            for tender in section_tenders:
+                if tender.group_id:
+                    grouped.setdefault(tender.group, []).append(tender)
+                else:
+                    blocks.append(
+                        {"is_group": False, "sort_key": newest_first(tender), "tender": tender}
+                    )
+            for group, members in grouped.items():
+                blocks.append(
+                    {
+                        "is_group": True,
+                        "sort_key": newest_first(members[0]),  # members already newest-first
+                        "group": group,
+                        "tenders": members,
+                        "collapsed": group.collapsed_by_default,
+                    }
+                )
+            blocks.sort(key=lambda b: b["sort_key"], reverse=True)
+            return blocks
+
         context["open_tenders"] = open_tenders
         context["other_tenders"] = other_tenders
+        context["open_blocks"] = as_blocks(open_tenders)
+        context["other_blocks"] = as_blocks(other_tenders)
         context["query"] = query
         return context
 
@@ -142,10 +209,21 @@ class TenderPage(Page):
         default=False,
         help_text="Tick to mark this tender cancelled, regardless of its closing date.",
     )
+    group = models.ForeignKey(
+        "tenders.TenderGroup",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="tenders",
+        help_text="Optional. Tenders sharing a group are shown together in one "
+        "collapsible panel on the tender list. Manage groups under Snippets - "
+        "Tender groups. Leave blank to list this tender on its own.",
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("reference_no"),
         FieldPanel("summary"),
+        FieldPanel("group"),
         FieldPanel("publish_date"),
         FieldPanel("opening_date"),
         FieldPanel("closing_date"),
