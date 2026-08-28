@@ -2745,16 +2745,20 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   font-size: 13.5px;
   color: #5c5220;
 }
+/* Red push-pin holding the note, centred at the top edge. */
 .dhpl-sticky-note::before {
   content: "";
   position: absolute;
-  top: -9px;
-  left: 22px;
-  width: 34px;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transform: rotate(-3deg);
+  top: -8px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.85) 0 16%, transparent 17%),
+    radial-gradient(circle at 62% 68%, #9d1020, #d0263b 55%, #e6485c);
+  box-shadow: 0 3px 5px rgba(20, 15, 0, 0.35);
 }
 .dhpl-sticky-note-date {
   display: block;
