@@ -1,5 +1,6 @@
 import urllib.parse
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -240,10 +241,11 @@ class TenderPage(Page):
         #   1. a sub-tender name  -> grouped under that heading (flat list)
         #   2. a category         -> grouped under a collapsible category heading
         #   3. neither            -> shown as a plain flat list, no dropdown
-        # Rows with no uploaded file are dropped so group counts stay honest.
-        docs = self.documents.filter(document__isnull=False).select_related(
-            "document", "category"
-        )
+        # Rows that are neither an upload nor a link are dropped so group
+        # counts stay honest.
+        docs = self.documents.filter(
+            Q(document__isnull=False) | ~Q(external_url="")
+        ).select_related("document", "category")
         sub_tender_documents = {}
         by_category = {}
         uncategorised_documents = []
@@ -297,18 +299,33 @@ class SubTender(Orderable):
 
 class TenderDocument(Orderable):
     """
-    A single downloadable file on a tender. Superseded documents are
-    never deleted — admins just add the replacement alongside it.
+    A downloadable resource on a tender — either a file uploaded to the
+    Wagtail document library, or an external link (e.g. a Google Drive
+    folder). Exactly one of `document` / `external_url` is filled in.
+    Superseded entries are never deleted — admins just add the
+    replacement alongside.
     """
 
     page = ParentalKey(TenderPage, on_delete=models.CASCADE, related_name="documents")
-    title = models.CharField(max_length=255)
+    title = models.CharField(
+        max_length=255,
+        help_text="The label shown to visitors, e.g. \"Annexure J - Equipment "
+        "list\" or \"Drawings (Google Drive)\".",
+    )
     document = models.ForeignKey(
         "wagtaildocs.Document",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text="Upload here for files hosted on this site. Leave blank if "
+        "you are linking out with the field below.",
+    )
+    external_url = models.URLField(
+        "External link",
+        blank=True,
+        help_text="Use instead of an upload to point at a file or folder hosted "
+        "elsewhere (Google Drive, Dropbox, etc.). Opens in a new tab.",
     )
     category = models.ForeignKey(
         "tenders.DocumentCategory",
@@ -331,9 +348,31 @@ class TenderDocument(Orderable):
     panels = [
         FieldPanel("title"),
         FieldPanel("document"),
+        FieldPanel("external_url"),
         FieldPanel("category"),
         FieldPanel("sub_tender_name"),
     ]
+
+    def clean(self):
+        super().clean()
+        if self.document_id and self.external_url:
+            raise ValidationError(
+                {
+                    "external_url": "Fill in either an uploaded document or an "
+                    "external link, not both."
+                }
+            )
+
+    @property
+    def href(self):
+        """Where the row links to — the uploaded file, or the external URL."""
+        if self.document_id:
+            return self.document.url
+        return self.external_url
+
+    @property
+    def is_external(self):
+        return not self.document_id and bool(self.external_url)
 
 
 class TenderExtension(Orderable):

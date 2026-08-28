@@ -2903,6 +2903,16 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   margin-left: auto;
   padding-right: 4px;
 }
+.dhpl-doc-link-tag {
+  color: var(--accent-dark);
+  background: rgba(var(--accent-rgb), 0.1);
+  padding: 1px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
 .dhpl-doc-icon {
   flex-shrink: 0;
   color: var(--accent-dark);

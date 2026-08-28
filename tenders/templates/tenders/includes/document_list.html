@@ -1,11 +1,16 @@
-{% comment %}Expects `documents` — an iterable of TenderDocument, each with a non-null `document`.{% endcomment %}
+{% comment %}Expects `documents` — an iterable of TenderDocument, each an upload or an external link.{% endcomment %}
 <ul class="dhpl-docs-list dhpl-tender-docs-list">
   {% for doc in documents %}
   <li>
-    <a href="{{ doc.document.url }}">
+    <a href="{{ doc.href }}"{% if doc.is_external %} target="_blank" rel="noopener noreferrer"{% endif %}>
+      {% if doc.is_external %}
+      <svg class="dhpl-doc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      {% else %}
       <svg class="dhpl-doc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      {% endif %}
       <span>{{ doc.title }}</span>
-      {% if doc.document.file_size %}<span class="dhpl-doc-size">{{ doc.document.file_size|filesizeformat }}</span>{% endif %}
+      {% if doc.document.file_size %}<span class="dhpl-doc-size">{{ doc.document.file_size|filesizeformat }}</span>
+      {% elif doc.is_external %}<span class="dhpl-doc-size dhpl-doc-link-tag">Link</span>{% endif %}
     </a>
   </li>
   {% endfor %}
