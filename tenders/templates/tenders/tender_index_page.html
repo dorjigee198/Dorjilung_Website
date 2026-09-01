@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags static %}
 
 {% block content %}
 <main class="dhpl-page-body dhpl-page-body-plain">
@@ -24,6 +24,22 @@
           class="dhpl-tender-search-input"
         >
       </div>
+
+      <label class="dhpl-tender-sort">
+        <span class="dhpl-tender-control-label">Sort by</span>
+        <select name="sort" class="dhpl-select-compact" aria-label="Sort tenders by">
+          {% for value, label in sort_options.items %}
+            <option value="{{ value }}"{% if value == sort %} selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="dhpl-tender-toggle">
+        <input type="checkbox" name="group" value="1"{% if group_by %} checked{% endif %}>
+        <span class="dhpl-toggle-track" aria-hidden="true"><span class="dhpl-toggle-thumb"></span></span>
+        <span class="dhpl-tender-control-label">Group by tender group</span>
+      </label>
+
       <button type="submit" class="btn btn-primary">Search</button>
       {% if query %}<a href="{% pageurl page %}" class="dhpl-text-link">Clear</a>{% endif %}
     </form>
@@ -57,4 +73,8 @@
     {% endif %}
   </div>
 </main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dhpl-tenders.js' %}"></script>
 {% endblock %}

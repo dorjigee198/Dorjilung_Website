@@ -97,6 +97,18 @@ class TenderGroup(models.Model):
         return self.name
 
 
+SORT_ACTIVITY = "activity"
+SORT_CLOSING = "closing"
+SORT_PUBLISH = "publish"
+
+SORT_OPTIONS = {
+    SORT_ACTIVITY: "Latest activity",
+    SORT_CLOSING: "Closing date",
+    SORT_PUBLISH: "Publish date",
+}
+DEFAULT_SORT = SORT_ACTIVITY
+
+
 class TenderIndexPage(Page):
     """
     The single public tender listing page, at /tenders/. The nav
@@ -117,6 +129,11 @@ class TenderIndexPage(Page):
         context = super().get_context(request)
 
         query = request.GET.get("q", "").strip()
+        sort = request.GET.get("sort", DEFAULT_SORT)
+        if sort not in SORT_OPTIONS:
+            sort = DEFAULT_SORT
+        group_by = request.GET.get("group") == "1"
+
         tenders_qs = (
             TenderPage.objects.live()
             .descendant_of(self)
@@ -129,29 +146,45 @@ class TenderIndexPage(Page):
             )
         tenders = list(tenders_qs)
 
-        # "Publish Date" is an editable field, so admins reorder a tender by
-        # adjusting it; pk is the tiebreaker so newer entries with an
-        # identical publish date still sort above older ones.
-        def newest_first(t):
-            return (t.publish_date, t.pk)
+        def sort_key(t):
+            if sort == SORT_CLOSING:
+                return t.effective_closing_date
+            if sort == SORT_PUBLISH:
+                # "Publish Date" is an editable field, so admins can reorder a
+                # tender by adjusting it; pk is the tiebreaker so newer
+                # entries with an identical publish date still sort above
+                # older ones.
+                return (t.publish_date, t.pk)
+            # Latest activity: Wagtail bumps last_published_at whenever the
+            # page (including its inline documents/extensions/notices) is
+            # republished, so this surfaces tenders with fresh uploads even
+            # if their announced publish date is old.
+            return (t.last_published_at or t.publish_date, t.pk)
 
-        open_tenders = sorted(
-            (t for t in tenders if t.computed_status == STATUS_OPEN),
-            key=newest_first,
-            reverse=True,
+        def ordered(section_tenders, reverse):
+            return sorted(section_tenders, key=sort_key, reverse=reverse)
+
+        # Closing date sorts ascending in the Open section (soonest deadline
+        # first); every other combination sorts newest/soonest-closed first.
+        open_reverse = sort != SORT_CLOSING
+
+        open_tenders = ordered(
+            (t for t in tenders if t.computed_status == STATUS_OPEN), reverse=open_reverse
         )
-        other_tenders = sorted(
-            (t for t in tenders if t.computed_status != STATUS_OPEN),
-            key=newest_first,
-            reverse=True,
+        other_tenders = ordered(
+            (t for t in tenders if t.computed_status != STATUS_OPEN), reverse=True
         )
 
-        def as_blocks(section_tenders):
-            """Turn a newest-first tender list into a list of render blocks:
-            one per lone (ungrouped) tender, one per tender group present.
-            Groups and lone tenders are interleaved by recency — a group
-            takes the publish date of its newest tender — so whatever was
-            published most recently is on top, group or not."""
+        def as_blocks(section_tenders, reverse):
+            """Turn an already-sorted tender list into a list of render
+            blocks: one per lone tender, plus (when group_by is on) one per
+            tender group present, re-sorted so a group takes the position of
+            its most relevant member."""
+            if not group_by:
+                return [
+                    {"is_group": False, "tender": tender} for tender in section_tenders
+                ]
+
             grouped = {}
             blocks = []
             for tender in section_tenders:
@@ -159,26 +192,29 @@ class TenderIndexPage(Page):
                     grouped.setdefault(tender.group, []).append(tender)
                 else:
                     blocks.append(
-                        {"is_group": False, "sort_key": newest_first(tender), "tender": tender}
+                        {"is_group": False, "sort_key": sort_key(tender), "tender": tender}
                     )
             for group, members in grouped.items():
                 blocks.append(
                     {
                         "is_group": True,
-                        "sort_key": newest_first(members[0]),  # members already newest-first
+                        "sort_key": sort_key(members[0]),  # members already sorted
                         "group": group,
                         "tenders": members,
                         "collapsed": group.collapsed_by_default,
                     }
                 )
-            blocks.sort(key=lambda b: b["sort_key"], reverse=True)
+            blocks.sort(key=lambda b: b["sort_key"], reverse=reverse)
             return blocks
 
         context["open_tenders"] = open_tenders
         context["other_tenders"] = other_tenders
-        context["open_blocks"] = as_blocks(open_tenders)
-        context["other_blocks"] = as_blocks(other_tenders)
+        context["open_blocks"] = as_blocks(open_tenders, open_reverse)
+        context["other_blocks"] = as_blocks(other_tenders, True)
         context["query"] = query
+        context["sort"] = sort
+        context["sort_options"] = SORT_OPTIONS
+        context["group_by"] = group_by
         return context
 
 
