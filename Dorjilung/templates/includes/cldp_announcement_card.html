@@ -1,4 +1,4 @@
-<div class="dhpl-cldp-card" id="cldp-announcement-{{ announcement.pk }}">
+<div class="dhpl-cldp-card">
   <div class="dhpl-cldp-card-top">
     <span class="dhpl-cldp-card-date">{{ announcement.date|date:"M j, Y" }}</span>
     {% if announcement.expires_on %}
@@ -8,12 +8,49 @@
     {% endif %}
   </div>
   <h4 class="dhpl-cldp-card-title">{{ announcement.title }}</h4>
-  {% if announcement.description %}<p class="dhpl-cldp-announce-desc">{{ announcement.description }}</p>{% endif %}
 
-  {% if announcement.document or announcement.link %}
-  <div class="dhpl-cldp-announce-actions">
-    {% if announcement.document %}<a class="dhpl-news-link" href="{{ announcement.document.url }}">Download →</a>{% endif %}
-    {% if announcement.link %}<a class="dhpl-news-link" href="{{ announcement.link }}" target="_blank" rel="noopener">Register / Learn More →</a>{% endif %}
+  <button type="button" class="dhpl-cldp-card-link" data-modal-trigger="cldp-announcement-{{ announcement.pk }}">
+    View Details
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </button>
+</div>
+
+<div class="dhpl-info-modal" id="cldp-announcement-{{ announcement.pk }}" aria-hidden="true">
+  <div class="dhpl-info-modal-backdrop" data-modal-close></div>
+  <div class="dhpl-info-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="cldp-announcement-{{ announcement.pk }}-title">
+    <button class="dhpl-info-modal-close" data-modal-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="dhpl-info-modal-body">
+      {% if announcement.expires_on %}
+        <span class="dhpl-cldp-card-rate{% if archived %} dhpl-cldp-card-rate-muted{% endif %}">
+          {% if archived %}Closed{% else %}Open until {{ announcement.expires_on|date:"M j, Y" }}{% endif %}
+        </span>
+      {% endif %}
+      <h2 id="cldp-announcement-{{ announcement.pk }}-title">{{ announcement.title }}</h2>
+      <p class="dhpl-cldp-modal-meta">{{ announcement.date|date:"F j, Y" }}</p>
+      {% if announcement.description %}<p>{{ announcement.description }}</p>{% endif %}
+
+      {% if announcement.document or announcement.link %}
+      <div class="dhpl-cldp-announce-attachments">
+        {% if announcement.document %}
+        <ul class="dhpl-docs-list dhpl-tender-docs-list">
+          <li>
+            <a href="{{ announcement.document.url }}" download>
+              <svg class="dhpl-doc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>{{ announcement.document_label|default:announcement.document.title }}</span>
+              {% if announcement.document.file_size %}<span class="dhpl-doc-size">{{ announcement.document.file_size|filesizeformat }}</span>{% endif %}
+            </a>
+          </li>
+        </ul>
+        {% endif %}
+        {% if announcement.link %}
+        <p class="dhpl-cldp-announce-link">
+          <a class="dhpl-news-link" href="{{ announcement.link }}" target="_blank" rel="noopener">{{ announcement.link_label|default:"Register / Learn More" }}: {{ announcement.link }}</a>
+        </p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
   </div>
-  {% endif %}
 </div>

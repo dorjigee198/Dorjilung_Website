@@ -4056,10 +4056,24 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   line-height: 1.5;
   margin: 0 0 16px;
 }
-.dhpl-cldp-announce-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+.dhpl-cldp-announce-attachments {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eef1f6;
+}
+.dhpl-info-modal-body .dhpl-cldp-announce-attachments .dhpl-docs-list li {
+  padding-left: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+.dhpl-info-modal-body .dhpl-cldp-announce-attachments .dhpl-docs-list li::before {
+  content: none;
+}
+.dhpl-cldp-announce-attachments .dhpl-tender-docs-list {
+  margin-bottom: 0;
+}
+.dhpl-cldp-announce-link {
+  margin: 12px 0 0;
 }
 .dhpl-cldp-card-rate-muted {
   background: #eef1f6;

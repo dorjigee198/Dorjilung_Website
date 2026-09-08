@@ -130,10 +130,22 @@ class CLDPAnnouncement(models.Model):
         related_name="+",
         help_text="Optional file to attach (e.g. a flyer or registration form).",
     )
+    document_label = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Button text for the document, e.g. \"Registration Form (PDF)\". "
+        "Defaults to the document's own title if left blank.",
+    )
     link = models.CharField(
         max_length=500,
         blank=True,
         help_text="Optional. E.g. a registration form or bot link.",
+    )
+    link_label = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Button text for the link, e.g. \"Register\" or \"Join the WhatsApp Group\". "
+        "Defaults to \"Register / Learn More\" if left blank.",
     )
     date = models.DateField(default=timezone.now, help_text="Used for ordering.")
     is_active = models.BooleanField(default=True)
@@ -150,7 +162,9 @@ class CLDPAnnouncement(models.Model):
         FieldPanel("title"),
         FieldPanel("description"),
         FieldPanel("document"),
+        FieldPanel("document_label"),
         FieldPanel("link"),
+        FieldPanel("link_label"),
         FieldPanel("date"),
         FieldPanel("is_active"),
         FieldPanel("expires_on"),
