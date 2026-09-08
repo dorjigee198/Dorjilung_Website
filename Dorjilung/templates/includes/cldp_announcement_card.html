@@ -1,0 +1,19 @@
+<div class="dhpl-cldp-card" id="cldp-announcement-{{ announcement.pk }}">
+  <div class="dhpl-cldp-card-top">
+    <span class="dhpl-cldp-card-date">{{ announcement.date|date:"M j, Y" }}</span>
+    {% if announcement.expires_on %}
+      <span class="dhpl-cldp-card-rate{% if archived %} dhpl-cldp-card-rate-muted{% endif %}">
+        {% if archived %}Closed{% else %}Open until {{ announcement.expires_on|date:"M j, Y" }}{% endif %}
+      </span>
+    {% endif %}
+  </div>
+  <h4 class="dhpl-cldp-card-title">{{ announcement.title }}</h4>
+  {% if announcement.description %}<p class="dhpl-cldp-announce-desc">{{ announcement.description }}</p>{% endif %}
+
+  {% if announcement.document or announcement.link %}
+  <div class="dhpl-cldp-announce-actions">
+    {% if announcement.document %}<a class="dhpl-news-link" href="{{ announcement.document.url }}">Download →</a>{% endif %}
+    {% if announcement.link %}<a class="dhpl-news-link" href="{{ announcement.link }}" target="_blank" rel="noopener">Register / Learn More →</a>{% endif %}
+  </div>
+  {% endif %}
+</div>

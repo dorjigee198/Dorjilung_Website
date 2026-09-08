@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from careers.models import JobOpening
-from cldp.models import CLDPActivity, CLDPSettings, cldp_dashboard_stats
+from cldp.models import CLDPActivity, CLDPAnnouncement, CLDPSettings, cldp_dashboard_stats
 from home.models import Achievement, Milestone
 from newsroom.models import GalleryCategory, GalleryImage, NewsItem
 from projectmap.models import ProjectLocation
@@ -94,6 +94,7 @@ def home(request):
         'cldp_activities': cldp_activities[:CLDP_HOME_LIMIT],
         'cldp_more_count': max(cldp_activities.count() - CLDP_HOME_LIMIT, 0),
         'cldp_stats': cldp_dashboard_stats(cldp_activities),
+        'cldp_announcements': CLDPAnnouncement.objects.visible().select_related('document'),
         'notice_tenders': notice_tenders,
         'notice_jobs': notice_jobs,
     }

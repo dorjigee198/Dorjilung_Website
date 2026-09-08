@@ -4047,6 +4047,38 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   margin-top: 32px;
 }
 
+.dhpl-cldp-announce-block {
+  margin-bottom: 32px;
+}
+.dhpl-cldp-announce-desc {
+  font-size: 13.5px;
+  color: #5b6577;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.dhpl-cldp-announce-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.dhpl-cldp-card-rate-muted {
+  background: #eef1f6;
+  color: #8891a0;
+}
+.dhpl-cldp-archive {
+  margin-top: 32px;
+}
+.dhpl-cldp-archive summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.dhpl-cldp-archive-grid {
+  margin-top: 20px;
+}
+
 /* Activity detail modal (reuses .dhpl-info-modal) */
 .dhpl-info-modal-body .dhpl-cldp-status {
   margin-bottom: 12px;

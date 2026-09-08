@@ -10,6 +10,17 @@
 
     {% if intro_text %}<p class="dhpl-section-text" style="margin-bottom: 32px;">{{ intro_text }}</p>{% endif %}
 
+    {% if announcements %}
+    <div class="dhpl-cldp-announce-block">
+      <h3 class="dhpl-block-heading">Announcements &amp; Notices</h3>
+      <div class="dhpl-cldp-grid dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        {% for a in announcements %}
+          {% include "includes/cldp_announcement_card.html" with announcement=a %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
     <div class="dhpl-cldp-stats-row dhpl-reveal-anim dhpl-reveal-stagger-rows">
       {% if stats.success_rate is not None %}
       <div class="dhpl-cldp-stat dhpl-cldp-stat-primary">
@@ -51,6 +62,17 @@
       <div class="dhpl-tender-empty">
         <p>No CLDP activities have been published yet — check back soon.</p>
       </div>
+    {% endif %}
+
+    {% if past_announcements %}
+    <details class="dhpl-cldp-archive">
+      <summary>Past Announcements ({{ past_announcements|length }})</summary>
+      <div class="dhpl-cldp-grid dhpl-cldp-archive-grid">
+        {% for a in past_announcements %}
+          {% include "includes/cldp_announcement_card.html" with announcement=a archived=True %}
+        {% endfor %}
+      </div>
+    </details>
     {% endif %}
   </div>
 </main>

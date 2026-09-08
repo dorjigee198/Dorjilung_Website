@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -94,6 +95,73 @@ def cldp_dashboard_stats(activities):
         "upcoming": sum(1 for a in activities if a.status == "upcoming"),
         "success_rate": round((total_actual / total_target) * 100) if total_target else None,
     }
+
+
+class CLDPAnnouncementQuerySet(models.QuerySet):
+    def visible(self):
+        today = timezone.localdate()
+        return self.filter(is_active=True).filter(
+            models.Q(expires_on__isnull=True) | models.Q(expires_on__gte=today)
+        )
+
+    def archived(self):
+        today = timezone.localdate()
+        return self.filter(is_active=True, expires_on__lt=today)
+
+
+@register_snippet
+class CLDPAnnouncement(models.Model):
+    """
+    A time-bound CLDP announcement or notice (e.g. "Registration open for
+    the March training"), with an optional document attachment and/or an
+    external link (e.g. a registration form). Shown as a summary on the
+    homepage and in full on the CLD Dashboard. Set an expiry date to stop
+    it appearing on the homepage — it stays visible as an archived entry
+    on the CLD Dashboard until unpublished or deleted.
+    """
+
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    document = models.ForeignKey(
+        "wagtaildocs.Document",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional file to attach (e.g. a flyer or registration form).",
+    )
+    link = models.CharField(
+        max_length=500,
+        blank=True,
+        help_text="Optional. E.g. a registration form or bot link.",
+    )
+    date = models.DateField(default=timezone.now, help_text="Used for ordering.")
+    is_active = models.BooleanField(default=True)
+    expires_on = models.DateField(
+        null=True,
+        blank=True,
+        help_text="Optional — hides this from the homepage after this date; "
+        "stays archived on the CLD Dashboard.",
+    )
+
+    objects = CLDPAnnouncementQuerySet.as_manager()
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("description"),
+        FieldPanel("document"),
+        FieldPanel("link"),
+        FieldPanel("date"),
+        FieldPanel("is_active"),
+        FieldPanel("expires_on"),
+    ]
+
+    class Meta:
+        ordering = ["-date"]
+        verbose_name = "CLDP Announcement"
+
+    def __str__(self):
+        return self.title
 
 
 @register_setting

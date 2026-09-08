@@ -613,6 +613,35 @@
       <a class="btn btn-outline-dark dhpl-news-view-all" href="/media-centre/">View All{% if more_news_count > 0 %} ({{ more_news_count }} more){% endif %}</a>
     </div>
   </section>
+
+  <section class="dhpl-section dhpl-section-alt" id="cldp-announcements">
+    <div class="dhpl-container">
+      <div class="dhpl-reveal-anim dhpl-reveal-up">
+        <div class="dhpl-section-label">CLDP</div>
+        <h2 class="dhpl-section-heading">Announcements &amp; Notices</h2>
+      </div>
+
+      {% if cldp_announcements %}
+      <div class="dhpl-cldp-grid dhpl-reveal-anim dhpl-reveal-stagger-rows">
+        {% for a in cldp_announcements %}
+        <div class="dhpl-cldp-card">
+          <div class="dhpl-cldp-card-top">
+            <span class="dhpl-cldp-card-date">{{ a.date|date:"M j, Y" }}</span>
+          </div>
+          <h4 class="dhpl-cldp-card-title">{{ a.title }}</h4>
+          {% if a.description %}<p class="dhpl-cldp-announce-desc">{{ a.description|truncatewords:28 }}</p>{% endif %}
+          <a class="dhpl-cldp-card-link" href="{% url 'cldp_dashboard' %}#cldp-announcement-{{ a.pk }}">
+            Show Details
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="dhpl-docs-empty">No current CLDP announcements — check back soon.</p>
+      {% endif %}
+    </div>
+  </section>
 </main>
 
 <div class="dhpl-video-modal" id="dhpl-video-modal" aria-hidden="true">
