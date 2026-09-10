@@ -251,11 +251,13 @@
       <h3 class="dhpl-block-heading">Board of Directors</h3>
       {% if board_members %}
       <div class="dhpl-board-grid dhpl-reveal-anim dhpl-reveal-stagger">
-        <div class="dhpl-board-row dhpl-board-row-chair">
-          {% include "includes/board_member_card.html" with member=board_members.0 %}
+        <div class="dhpl-board-row dhpl-board-row-lead">
+          {% for member in board_members|slice:":3" %}
+            {% include "includes/board_member_card.html" with member=member %}
+          {% endfor %}
         </div>
         <div class="dhpl-board-row dhpl-board-row-rest">
-          {% for member in board_members|slice:"1:" %}
+          {% for member in board_members|slice:"3:" %}
             {% include "includes/board_member_card.html" with member=member %}
           {% endfor %}
         </div>

@@ -13,8 +13,9 @@ class BoardMember(models.Model):
     under "Organizational Hierarchy" — unlike Department/TeamMember
     below, this isn't tucked behind a click-to-expand accordion, since
     the board is meant to be visible at a glance. Order controls both
-    display order and row placement (the homepage shows the first 3 in
-    one row, the rest in the next), so keep the chairman first.
+    display order and row placement — the homepage shows the first 3
+    in a front row and the rest below, so set order values with the
+    chairman as the middle (2nd) of that front row.
     """
 
     name = models.CharField(max_length=255)

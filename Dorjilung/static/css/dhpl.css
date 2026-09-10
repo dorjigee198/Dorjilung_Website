@@ -1047,12 +1047,8 @@ img {
   gap: 36px 32px;
   align-items: start;
 }
-.dhpl-board-row-chair {
+.dhpl-board-row-lead {
   margin-bottom: 40px;
-}
-.dhpl-board-row-chair .dhpl-board-avatar {
-  width: 132px;
-  height: 132px;
 }
 .dhpl-board-card {
   text-align: center;
@@ -1098,7 +1094,7 @@ img {
   .dhpl-board-row {
     gap: 32px 24px;
   }
-  .dhpl-board-row-chair {
+  .dhpl-board-row-lead {
     margin-bottom: 32px;
   }
 }
