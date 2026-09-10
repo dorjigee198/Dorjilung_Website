@@ -1041,20 +1041,23 @@ img {
   margin: 8px 0 36px;
 }
 .dhpl-board-row {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 36px 32px;
   align-items: start;
 }
-.dhpl-board-row-3 {
-  grid-template-columns: repeat(3, 1fr);
+.dhpl-board-row-chair {
   margin-bottom: 40px;
 }
-.dhpl-board-row-4 {
-  grid-template-columns: repeat(4, 1fr);
+.dhpl-board-row-chair .dhpl-board-avatar {
+  width: 132px;
+  height: 132px;
 }
 .dhpl-board-card {
   text-align: center;
   padding: 4px 8px;
+  width: 180px;
 }
 .dhpl-board-avatar {
   width: 112px;
@@ -1092,19 +1095,11 @@ img {
   line-height: 1.4;
 }
 @media (max-width: 900px) {
-  .dhpl-board-row-3,
-  .dhpl-board-row-4 {
-    grid-template-columns: repeat(2, 1fr);
+  .dhpl-board-row {
     gap: 32px 24px;
   }
-  .dhpl-board-row-3 {
+  .dhpl-board-row-chair {
     margin-bottom: 32px;
-  }
-}
-@media (max-width: 480px) {
-  .dhpl-board-row-3,
-  .dhpl-board-row-4 {
-    grid-template-columns: 1fr;
   }
 }
 

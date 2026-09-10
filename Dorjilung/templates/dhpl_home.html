@@ -251,34 +251,12 @@
       <h3 class="dhpl-block-heading">Board of Directors</h3>
       {% if board_members %}
       <div class="dhpl-board-grid dhpl-reveal-anim dhpl-reveal-stagger">
-        <div class="dhpl-board-row dhpl-board-row-3">
-          {% for member in board_members|slice:":3" %}
-          <div class="dhpl-board-card">
-            <div class="dhpl-board-avatar" aria-hidden="true">
-              {% if member.photo %}
-                {% image member.photo fill-224x224 %}
-              {% else %}
-                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
-              {% endif %}
-            </div>
-            <div class="dhpl-board-name">{{ member.name }}</div>
-            <div class="dhpl-board-role">{{ member.designation }}</div>
-          </div>
-          {% endfor %}
+        <div class="dhpl-board-row dhpl-board-row-chair">
+          {% include "includes/board_member_card.html" with member=board_members.0 %}
         </div>
-        <div class="dhpl-board-row dhpl-board-row-4">
-          {% for member in board_members|slice:"3:" %}
-          <div class="dhpl-board-card">
-            <div class="dhpl-board-avatar" aria-hidden="true">
-              {% if member.photo %}
-                {% image member.photo fill-224x224 %}
-              {% else %}
-                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
-              {% endif %}
-            </div>
-            <div class="dhpl-board-name">{{ member.name }}</div>
-            <div class="dhpl-board-role">{{ member.designation }}</div>
-          </div>
+        <div class="dhpl-board-row dhpl-board-row-rest">
+          {% for member in board_members|slice:"1:" %}
+            {% include "includes/board_member_card.html" with member=member %}
           {% endfor %}
         </div>
       </div>
