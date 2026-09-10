@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
@@ -18,6 +19,11 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
+    # Crawlers (Google included) check /favicon.ico at the domain root
+    # regardless of the <link rel="icon"> tag in base.html.
+    path("favicon.ico", RedirectView.as_view(
+        url=settings.STATIC_URL + "images/favicon/favicon.ico", permanent=True
+    )),
 ]
 
 
