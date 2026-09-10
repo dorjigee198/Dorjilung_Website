@@ -24,6 +24,9 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(
         url=settings.STATIC_URL + "images/favicon/favicon.ico", permanent=True
     )),
+    # Legacy URLs still indexed by Google from the old pre-Django site —
+    # redirect them to their current equivalent instead of 404ing.
+    path("project-overview.php", RedirectView.as_view(url="/project/", permanent=True)),
 ]
 
 
