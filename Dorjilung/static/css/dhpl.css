@@ -1,4 +1,6 @@
 :root {
+  /* Original brand colors, taken directly from the DHPL seal: navy
+     outer ring, gold inner ring. */
   --nav-bg: #0a1f3d;
   --nav-bg-light: #12294d;
   --accent: #d4af37;
@@ -8,6 +10,7 @@
   --text-light: #f4f6f9;
   --muted: #bfc8d6;
   --ink: #0a1f3d;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
 }
 * {
   box-sizing: border-box;
@@ -288,13 +291,41 @@ img {
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transform: scale(1.03);
-  transition: opacity 0.6s ease, transform 3.5s ease;
+  /* Unify saturation/contrast across photos shot at different times so
+     the slideshow reads as one campaign, not a grab-bag of uploads. */
+  filter: saturate(0.94) contrast(1.03);
+  transition: opacity 0.9s ease;
+}
+/* Low-opacity navy + gold wash (multiply) — same color-grade recipe
+   reused on split-media and gallery photos below for a consistent look. */
+.dhpl-hero-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.14) 0%, rgba(var(--accent-rgb), 0) 42%),
+    linear-gradient(315deg, rgba(10, 31, 61, 0.3) 0%, rgba(10, 31, 61, 0) 55%);
+  mix-blend-mode: multiply;
 }
 .dhpl-hero-slide.active {
   opacity: 1;
-  transform: scale(1);
   z-index: 1;
+  /* Slow continuous zoom for the full time a slide is on screen (Ken
+     Burns) instead of a quick settle — DELAY in dhpl.js is timed to match. */
+  animation: dhpl-kenburns 6.5s ease-out forwards;
+}
+@keyframes dhpl-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dhpl-hero-slide.active {
+    animation: none;
+  }
 }
 .dhpl-hero-overlay {
   position: absolute;
@@ -381,10 +412,11 @@ img {
   text-transform: uppercase;
 }
 .dhpl-hero h1 {
-  font-size: clamp(30px, 5.2vw, 52px);
-  line-height: 1.08;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.6vw, 60px);
+  line-height: 1.06;
   margin: 16px 0;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.5px;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
 }
@@ -436,6 +468,57 @@ img {
   transform: translateY(-2px);
 }
 
+/* ---------------- Hero stat strip: big count-up numbers bridging the
+   hero into the page (same navy as the header, so it reads as one
+   continuous opening statement rather than a separate section) ---------------- */
+.dhpl-stats-strip {
+  position: relative;
+  z-index: 2;
+  background: var(--nav-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.dhpl-stats-strip-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 40px 20px;
+  text-align: center;
+}
+.dhpl-stat-item {
+  padding: 0 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+.dhpl-stat-item:last-child {
+  border-right: none;
+}
+.dhpl-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(30px, 3.6vw, 50px);
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+.dhpl-stat-label {
+  display: block;
+  margin-top: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+@media (max-width: 720px) {
+  .dhpl-stats-strip-inner {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 28px;
+  }
+  .dhpl-stat-item:nth-child(2) {
+    border-right: none;
+  }
+}
+
 /* ---------------- Content sections (home + placeholder pages) ---------------- */
 .dhpl-section-label {
   display: inline-block;
@@ -456,8 +539,9 @@ img {
   background: #f7f9fc;
 }
 .dhpl-section-heading {
-  font-size: clamp(26px, 3.4vw, 36px);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 600;
   color: var(--ink);
   margin: 6px 0 20px;
   letter-spacing: -0.3px;
@@ -467,6 +551,9 @@ img {
   font-size: 16px;
   line-height: 1.75;
   max-width: 900px;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 .dhpl-section-center {
   text-align: center;
@@ -476,6 +563,13 @@ img {
 .dhpl-section-center .dhpl-section-text {
   margin-left: auto;
   margin-right: auto;
+}
+/* Justified text only suits a real body-copy column — a short, already
+   centered intro blurb (like the partners section) should stay centered
+   rather than have justify's stretched spacing applied to two lines. */
+.dhpl-section-center.dhpl-section-text,
+.dhpl-section-center .dhpl-section-text {
+  text-align: center;
 }
 .dhpl-buttons-center {
   justify-content: center;
@@ -581,7 +675,17 @@ img {
   align-items: center;
   margin-bottom: 40px;
 }
+/* Project Overview: the left column runs long (intro + two subsections),
+   so the photo should sit flush with the top of that column instead of
+   floating dead-center against a much taller block of text. */
+.dhpl-split-grid-top {
+  align-items: start;
+}
 .dhpl-split-media {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(10, 31, 61, 0.18);
@@ -592,6 +696,17 @@ img {
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
+  filter: saturate(0.94) contrast(1.04);
+}
+/* Same color-grade wash as the hero slides — see .dhpl-hero-slide::before. */
+.dhpl-split-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.14) 0%, rgba(var(--accent-rgb), 0) 42%),
+    linear-gradient(315deg, rgba(10, 31, 61, 0.3) 0%, rgba(10, 31, 61, 0) 55%);
+  mix-blend-mode: multiply;
 }
 @media (max-width: 860px) {
   .dhpl-split-grid {
@@ -615,11 +730,25 @@ img {
   display: block;
   border-radius: 12px;
   box-shadow: 0 10px 26px rgba(10, 31, 61, 0.14);
+  filter: saturate(0.94) contrast(1.04);
   transition: transform 0.3s ease;
 }
 .dhpl-gallery-mosaic > div {
+  position: relative;
   overflow: hidden;
   border-radius: 12px;
+}
+/* Same color-grade wash as the hero slides — see .dhpl-hero-slide::before. */
+.dhpl-gallery-mosaic > div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.14) 0%, rgba(var(--accent-rgb), 0) 42%),
+    linear-gradient(315deg, rgba(10, 31, 61, 0.3) 0%, rgba(10, 31, 61, 0) 55%);
+  mix-blend-mode: multiply;
 }
 .dhpl-gallery-mosaic > div:hover img {
   transform: scale(1.06);
@@ -671,9 +800,10 @@ img {
   border-left: 4px solid var(--accent);
   background: #fff;
   border-radius: 8px;
-  font-size: 19px;
-  font-weight: 600;
-  line-height: 1.6;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.55;
   color: var(--ink);
   font-style: italic;
 }
@@ -726,6 +856,14 @@ img {
   gap: 32px;
   margin: 32px 0 36px;
 }
+/* Same subsection styling, stacked in one column — used where the
+   subsections sit alongside an image rather than spanning full width. */
+.dhpl-subsection-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin: 28px 0 24px;
+}
 .dhpl-subsection h3 {
   margin: 0 0 10px;
   font-size: 17px;
@@ -737,6 +875,9 @@ img {
   font-size: 15px;
   color: #5b6577;
   line-height: 1.7;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 /* Technical Specs / Salient Features */
@@ -822,11 +963,21 @@ img {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
-  align-items: start;
   margin-bottom: 24px;
+}
+.dhpl-progress-col {
+  display: flex;
+  flex-direction: column;
 }
 .dhpl-progress-col .dhpl-achievement-grid {
   margin-bottom: 24px;
+}
+/* Push each column's own View More button to a shared baseline even
+   when one column (e.g. the milestone timeline) runs taller than the
+   other, instead of the two buttons landing at different heights. */
+.dhpl-progress-col > .btn {
+  margin-top: auto;
+  align-self: flex-start;
 }
 @media (max-width: 900px) {
   .dhpl-progress-columns {
@@ -982,6 +1133,14 @@ img {
 }
 .dhpl-org-chart[hidden] {
   display: none;
+}
+/* These two containers are bordered boxes meant to hold image/accordion
+   content with its own internal padding — when empty, the fallback
+   paragraph has nothing to pad it and sits flush against the border. */
+.dhpl-org-chart > .dhpl-docs-empty,
+.dhpl-dept-accordion > .dhpl-docs-empty {
+  padding: 24px 20px;
+  margin: 0;
 }
 
 /* Structure: department accordion */
@@ -1169,6 +1328,23 @@ img {
   isolation: isolate;
   position: relative;
   z-index: 0;
+}
+.dhpl-map-fallback {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 24px;
+  background: #f8f9fc;
+  color: #6b7280;
+  font-size: 14px;
+}
+.dhpl-map-fallback a {
+  color: var(--accent-dark);
+  font-weight: 600;
 }
 .dhpl-map-legend {
   display: flex;
@@ -1784,6 +1960,9 @@ img {
   line-height: 1.75;
   color: #4a5568;
   margin: 0 0 8px;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 .dhpl-info-modal-body ul {
   margin: 8px 0 0;
@@ -1920,7 +2099,16 @@ img {
   gap: 28px;
   align-items: start;
 }
-.dhpl-stream-full {
+/* Wagtail wraps every StreamField block in its own <div class="block-*">,
+   which becomes the actual grid item — grid-column only affects direct
+   children of the grid, so it has to target that wrapper, not the
+   .dhpl-stream-full div one level further inside it (which is otherwise
+   invisible to the grid and silently did nothing). Without this,
+   full-width blocks like the stat cards and each prose section got
+   squeezed into a single narrow column alongside whatever short block
+   happened to land next to them, instead of spanning the row. */
+.dhpl-project-stream > .block-stat_cards,
+.dhpl-project-stream > .block-text_section {
   grid-column: 1 / -1;
 }
 
@@ -2033,9 +2221,10 @@ img {
   padding: 52px 20px 32px;
 }
 .dhpl-page-header h1 {
-  font-size: clamp(26px, 3.4vw, 36px);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 40px);
   margin: 6px 0 0;
-  font-weight: 800;
+  font-weight: 600;
 }
 .dhpl-page-body {
   padding: 56px 20px 96px;
@@ -2044,8 +2233,9 @@ img {
   padding-top: 44px;
 }
 .dhpl-simple-title {
-  font-size: clamp(24px, 3vw, 32px);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.2vw, 34px);
+  font-weight: 600;
   color: var(--ink);
   margin: 0;
 }
@@ -3304,6 +3494,13 @@ body.js-ready .dhpl-reveal-split.is-visible > * {
   line-height: 1.75;
   max-width: 620px;
   margin: 16px auto 0;
+}
+.dhpl-grievance-intro-dz {
+  color: #6b7684;
+  font-size: 15px;
+  line-height: 1.9;
+  max-width: 620px;
+  margin: 10px auto 0;
 }
 
 .dhpl-grievance-form {

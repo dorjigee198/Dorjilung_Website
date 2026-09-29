@@ -13,6 +13,7 @@
         We are committed to addressing your concerns transparently. If you cannot write,
         you may record your voice or upload a video below.
       </p>
+      <p class="dhpl-dz dhpl-grievance-intro-dz" lang="dz">རྡོེ་ལུང་གློག་མེ་ལས་འཛིན་གྱི་ཁྱོད་ཀྱི་ཚ་གྱང་ཚུ་ དྭངས་གསལ་གྱི་ཐོག་ལས་ བསལ་ནི་ལུ་ རྩ་འགེངས་དོ། གལ་སྲིད་ཁྱོད་ཀྱིས་བྲི་མ་ཚུགས་པ་ཅིན་ ཁྱོད་ཀྱིས་ཁྱོད་རའི་སྐད་སྒྲ་གཟུང་ནི་དང་ཡང་ཅིན་ འོག་ལུ་ཡོད་པའི་གློག་བརྙན་བཙུགས་ནི་ལག་ལེན་ཐབ་སྟེ་ བཙུག་གནང་།</p>
     </div>
 
     <form
@@ -101,19 +102,22 @@
 
         <div class="dhpl-field dhpl-field-full">
           <label for="{{ form.description.id_for_label }}">
-            Written Description <span class="dhpl-dz" lang="dz">/ ཞུ་བཅོལ་བརྗོད་རྒྱུ།</span>
+            Written Description <span class="dhpl-dz" lang="dz">/ ཉོག་བཤད་འགྲེལ་བཤད་རྐྱབ་གནང་།</span>
           </label>
           {{ form.description }}
         </div>
       </div>
 
       <div class="dhpl-grievance-alt">
-        <h2>Alternative: Record Voice or Upload Video</h2>
-        <p>For those who cannot write, please use the options below to explain your grievance verbally.</p>
+        <h2>Alternative: Record Voice or Upload Video <span class="dhpl-dz" lang="dz">/ གདམ་ཁ་: སྒྲ་བཟུང་འབད་ནི་ ཡང་ན་ གློག་བརྙན་ཐོག་ཉོག་བཤདབཙུགས་ནི།</span></h2>
+        <p>
+          For those who cannot write, please use the options below to explain your grievance verbally.
+          <span class="dhpl-dz" lang="dz">ཡི་གུ་བྲི་མ་ཚུགས་མི་ཚུ་གི་དོན་ལུ་ ཁྱེད་རའི་ཉོག་བཤད་ཚུ་ ཁ་ཐོག་ལས་ཁ་གསལ་རྐྱབ་ནིའི་དོན་ལུ་ འོག་གི་གདམ་ཁ་ཚུ་ ལག་ལེན་འཐབ་གནང་།</span>
+        </p>
 
         <div class="dhpl-grievance-alt-grid">
           <div class="dhpl-upload-field">
-            <span class="dhpl-upload-label">Record Voice</span>
+            <span class="dhpl-upload-label">Record Voice <span class="dhpl-dz" lang="dz">/ སྐད་སྒྲ་གཟུང་ཉོག་བཤདབཀོད་གནང་།</span></span>
             <label class="dhpl-upload-dropzone" for="{{ form.audio_file.id_for_label }}">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
               <span id="grievance-audio-filename">Upload a voice recording</span>
@@ -124,7 +128,7 @@
           </div>
 
           <div class="dhpl-upload-field">
-            <span class="dhpl-upload-label">Upload a Video</span>
+            <span class="dhpl-upload-label">Upload a Video <span class="dhpl-dz" lang="dz">/ གློག་བརྙན་དང་གཅིག་ཁར་སྒྲུབ་བྱེད་བཀོད་གནང་།</span></span>
             <label class="dhpl-upload-dropzone" for="{{ form.video_file.id_for_label }}">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
               <span id="grievance-video-filename">Browse files</span>
@@ -141,7 +145,7 @@
         {{ form.declaration_accepted }}
         <span>
           I declare that the information provided is true and correct.
-          <span class="dhpl-dz" lang="dz">/ ང་ལུ་བཀང་ཡོད་པའི་བརྡ་དོན་འདི་བདེན་མཐོང་དང་ངེས་བདེན་ཨིནམ་ང་གིས་ཁས་ལེན་འབདཝ་ཨིན།</span>
+          <span class="dhpl-dz" lang="dz">/ ང་གིས་བཀང་ཡོད་མི་བརྡ་དོན་འདི་ བདེན་པ་ཡོདཔ་སྦེ་ གསལ་བསྒྲགས་འབདཝ་ཨིན།།</span>
         </span>
       </label>
       {% for error in form.declaration_accepted.errors %}<span class="dhpl-field-error">{{ error }}</span>{% endfor %}

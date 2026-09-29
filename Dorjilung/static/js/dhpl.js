@@ -53,6 +53,62 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Hero stat strip — big numbers count up from 0 once scrolled into
+  // view, easing out so the motion feels like it's settling into place.
+  var statEls = document.querySelectorAll('.dhpl-stat-value[data-count-to]');
+  if (statEls.length) {
+    var animateStat = function (el) {
+      var target = parseFloat(el.dataset.countTo);
+      var decimals = parseInt(el.dataset.decimals || '0', 10);
+      var prefix = el.dataset.prefix || '';
+      var suffix = el.dataset.suffix || '';
+      var duration = 1400;
+      var startTime = null;
+
+      function format(value) {
+        return decimals > 0
+          ? prefix + value.toFixed(decimals) + suffix
+          : prefix + Math.round(value).toLocaleString('en-US') + suffix;
+      }
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = format(target * eased);
+        if (progress < 1) window.requestAnimationFrame(step);
+      }
+
+      window.requestAnimationFrame(step);
+    };
+
+    if ('IntersectionObserver' in window) {
+      var statObserver = new IntersectionObserver(
+        function (entries, observer) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateStat(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      statEls.forEach(function (el) {
+        statObserver.observe(el);
+      });
+    } else {
+      statEls.forEach(function (el) {
+        var decimals = parseInt(el.dataset.decimals || '0', 10);
+        var target = parseFloat(el.dataset.countTo);
+        el.textContent =
+          (el.dataset.prefix || '') +
+          (decimals > 0 ? target.toFixed(decimals) : Math.round(target).toLocaleString('en-US')) +
+          (el.dataset.suffix || '');
+      });
+    }
+  }
+
   var toggle = document.querySelector('.dhpl-mobile-toggle');
   var menu = document.getElementById('dhpl-main-nav');
 
@@ -86,7 +142,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (hero && slides.length > 1) {
     var current = 0;
     var intervalId;
-    var DELAY = 2200;
+    // Matches the 6.5s Ken Burns zoom in dhpl.css (.dhpl-hero-slide.active)
+    // so each slide gets to finish its motion before the next crossfade.
+    var DELAY = 6500;
 
     function showSlide(index) {
       slides[current].classList.remove('active');
